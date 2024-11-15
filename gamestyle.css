@@ -79,7 +79,7 @@ button {
     top: 50%;
     width: 60px;
     height: 84px;
-    background-image: url('../cards/back.png');
+    background-image: url('https://imamuradaiki.github.io/github.io/cards/back.png');
     background-size: cover;  /* 画像をコンテナに合わせる */
     background-position: center;  /* 画像を中央に配置 */
     border-radius: 5px;
