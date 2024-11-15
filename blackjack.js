@@ -57,7 +57,7 @@ class BlackjackGame {
 
     addCardToHand(card, hand, index = 0) {
         const cardImage = document.createElement('img');
-        cardImage.src = `../cards/${card.value}_${card.suit}.png`;
+        cardImage.src = `cards/${card.value}_${card.suit}.png`;
         cardImage.classList.add('card-image');
         cardImage.style.animationDelay = `${index * 0.2}s`;
         cardImage.classList.add('deal-animation');
