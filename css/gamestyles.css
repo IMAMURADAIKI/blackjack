@@ -1,0 +1,308 @@
+/*ゲームエリア用CSS */
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgb(0, 88, 27);
+  color: #fff;
+  margin: 0;
+  padding: 0;
+}
+
+
+.game-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 800px;
+  height: 500px;
+  margin: 0;
+  padding: 10px;
+  box-sizing: border-box;
+  position: relative;
+}
+
+h1 {
+  margin: 10px;
+  font-size: 24px;
+}
+
+h3 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: translateY(200%);
+  margin: 10px;
+  font-size: 50px;
+}
+
+#dealer-hand h2 {
+  font-size: 14px;
+  position: absolute;
+  left: 350px;
+  top: 30px;
+}
+
+#player-hand h2 {
+  font-size: 14px;
+  position: absolute;
+  left: 350px;
+  top: 200px;
+}
+
+.buttons .game_buttons #stand_b{
+  display: none;
+  font-size: 12px;
+  position: absolute;
+  left: 350px;
+  top: 400px;
+  width: 80px;
+  height: 30px;
+}
+
+.buttons .game_buttons #deal_b{
+  display: block;
+  position: absolute;
+  left: 350px;
+  top: 400px;
+  width: 80px;
+  height: 30px;
+}
+
+.buttons .game_buttons #hit_b{
+  display: none;
+  position: absolute;
+  font-size: 12px;
+  left: 265px;
+  top: 370px;
+  width: 80px;
+  height: 30px;
+}
+
+.buttons .game_buttons #double_b{
+  display: none;
+  position: absolute;
+  font-size: 12px;
+  left: 265px;
+  top: 400px;
+  width: 80px;
+  height: 30px;
+}
+
+.buttons .game_buttons #split_b{
+  display: none;
+  position: absolute;
+  font-size: 12px;
+  left: 435px;
+  top: 370px;
+  width: 80px;
+  height: 30px;
+}
+
+.buttons .game_buttons #insurance_b{
+  display: none;
+  position: absolute;
+  font-size: 12px;
+  left: 435px;
+  top: 400px;
+  width: 80px;
+  height: 30px;
+}
+
+.buttons .game_buttons #surrender_b{
+  display: none;
+  position: absolute;
+  font-size: 12px;
+  left: 350px;
+  top: 450px;
+  width: 80px;
+  height: 30px;
+}
+
+.card-image {
+  width: 60px;
+  height: auto;
+  margin: 3px;
+  position: relative;
+}
+
+@keyframes dealCard {
+  0% {
+      transform: translate(400px, -100px) rotate(360deg) scale(0.5);
+      opacity: 0;
+  }
+  50% {
+      opacity: 0.5;
+  }
+  100% {
+      transform: translate(0, 0) rotate(0deg) scale(1);
+      opacity: 1;
+  }
+}
+
+.deal-animation {
+  animation: dealCard 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+}
+
+#dealer-cards, #player-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+#dealer-cards {
+  position: relative;
+  top: 70px;
+}
+
+#player-cards {
+  position: relative;
+  top: 150px;
+}
+
+.split-hands {
+  position: relative;
+  top: 155px;
+}
+
+.split-hands {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.split-hands #hand-of-cards {
+  font-size: 16px;
+  color: silver;
+  position: absolute;
+  top: -70px;
+}
+
+.split-hand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.split-hand-cards {
+  display: flex;
+  gap: 10px;
+}
+.split-hand-score {
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+#split-hand-1-score, #split-hand-2-score{
+  font-size: 14px;
+  position: absolute;
+  top: -45px;
+}
+
+#message {
+  position: absolute;
+  top: 345px;
+  flex-wrap: wrap;
+}
+
+/* プレイヤーデータ */
+.player-date {
+  font-size: 14px;
+  position: absolute;
+  bottom: 20px; /* 下部に配置 */
+  left: 20px; /* 左端に配置 */
+  width: 20%; /* 幅を縮小 */
+  text-align: center;
+  background-color: #333; /* 背景色 */
+  padding: 10px;
+  border-radius: 8px;
+}
+
+
+
+/* ベットエリア用CSS */
+.bet-area {
+  position: absolute;
+  bottom: 20px; /* 下部に配置 */
+  right: 20px; /* 右端に配置 */
+  width: 180px;
+  height: 220px;
+  width: 20%; /* 幅を縮小 */
+  text-align: center;
+  background-color: #333; /* 背景色 */
+  padding: 10px;
+  border-radius: 8px;
+}
+
+/* チップエリア */
+.chips {
+  display: grid;
+  grid-template-columns: repeat(3, 40px); /* チップの幅を小さく */
+  grid-gap: 5px;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.chip {
+  width: 35px; /* チップの幅を小さく */
+  height: 35px;
+  line-height: 35px;
+  font-size: 12px; /* フォントサイズを小さく */
+  border-radius: 50%;
+  text-align: center;
+  font-weight: bold;
+  color: white;
+  border: 2px solid white;
+  cursor: pointer;
+}
+
+.chip.green { background-color: green; }
+.chip.yellow { background-color: yellow; color: black; }
+.chip.blue { background-color: blue; }
+.chip.black { background-color: black; }
+.chip.red { background-color: red; }
+.chip.purple { background-color: purple; }
+.chip.orange { background-color: orange; }
+.chip.pink { background-color: pink; }
+
+/* ベットコントロールエリア */
+.bet-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.bet-display {
+  margin-bottom: 10px;
+}
+
+.bet-display label {
+  font-size: 12px; /* ラベルのフォントを小さく */
+  color: white;
+}
+
+#bet-amount {
+  width: 60px; /* 入力エリアを小さく */
+  text-align: center;
+  font-size: 14px;
+  padding: 2px;
+}
+
+.bet-controls .buttons {
+  display: flex;
+  gap: 5px;
+}
+
+.bet-controls button {
+  background-color: #444;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 8px;
+  font-size: 12px; /* ボタンのフォントを小さく */
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #666;
+}
