@@ -73,7 +73,7 @@ class BlackjackGame {
 
     addCardToHand(card, hand, index = 0) {
         const cardImage = document.createElement('img');
-        cardImage.src = `../../cards/${card.value}_${card.suit}.png`;
+        cardImage.src = `../cards/${card.value}_${card.suit}.png`;
         cardImage.classList.add('card-image');
         cardImage.style.animationDelay = `${index * 0.2}s`;
         cardImage.classList.add('deal-animation');
@@ -119,7 +119,7 @@ class BlackjackGame {
         this.addCardToHand(this.dealerHand[0], 'dealer', 0);
                 
         this.dealerHiddenCardElement = document.createElement('img');
-        this.dealerHiddenCardElement.src = '../../cards/back.png';
+        this.dealerHiddenCardElement.src = '../cards/back.png';
         this.dealerHiddenCardElement.classList.add('card-image', 'hidden-card');
         document.getElementById('dealer-cards').appendChild(this.dealerHiddenCardElement);
                 
