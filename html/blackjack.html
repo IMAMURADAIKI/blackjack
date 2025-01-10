@@ -4,7 +4,6 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Blackjack Game</title>
-
         <link href="../css/gamestyles.css" rel="stylesheet">
     </head>
     <body>
@@ -41,13 +40,13 @@
                 <div class="buttons">
                     <!-- 既存のボタン群 -->
                     <div class="game_buttons">
-                        <button id="hit_b" onclick="blackjackGame.hit()">ヒット</button>
-                        <button id="stand_b" onclick="blackjackGame.stand()">スタンド</button>
-                        <button id="double_b" onclick="blackjackGame.doubledraw()">ダブル</button>
-                        <button id="split_b" onclick="blackjackGame.split()">スプリット</button>
-                        <button id="insurance_b" onclick="blackjackGame.insurance()">インシュランス</button>
-                        <button id="surrender_b" onclick="blackjackGame.surrender()">サレンダー</button>
-                        <button id="deal_b" onclick="blackjackGame.startGame()">スタート</button>
+                        <button id="hit_b" onclick="hit()">ヒット</button>
+                        <button id="stand_b" onclick="stand()">スタンド</button>
+                        <button id="double_b">ダブル</button>
+                        <button id="split_b">スプリット</button>
+                        <button id="insurance_b">インシュランス</button>
+                        <button id="surrender_b">サレンダー</button>
+                        <button id="deal_b">スタート</button>
                     </div>
                 </div>
                 <h2 id="message"></h2>
@@ -102,6 +101,26 @@
                 </div>
             </div>
         </div>
+        <script type="text/javascript">
+            // チップの値を定義
+            const chipValues = {
+                green: 1,
+                yellow: 10,
+                blue: 50,
+                black: 100,
+                red: 500,
+                purple: 1000,
+                orange: 5000,
+                pink: 10000
+            }
+
+            // ベット関連の初期設定
+            let currentBet = 0;
+            let maxBet = 10000;
+            let minBet = 0;
+            let BetSum = 0;
+        </script>
+        <script type="text/javascript" src="../js/index.js" defer></script>
+        <script type="text/javascript" src="../js/bet.js" defer></script>
     </body>
-    <script src="../js/blackjack.js"></script>
 </html>
