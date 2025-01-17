@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Blackjack Game</title>
+        <link href="../css/gamestyles.css" rel="stylesheet">
+
+        <script type="text/javascript" src="../js/index.js" defer></script>
+        <script type="text/javascript" src="../js/bet.js"  defer></script>
+    
+    </head>
+    <style>
+        /* メニュー関連のスタイルを追加 */
+        #menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        #menu-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 300px;
+            color: black;
+        }
+        .menu-button {
+            display: block;
+            width: 200px;
+            margin: 10px auto;
+            padding: 10px;
+            font-size: 16px;
+            color: black;
+        }
+        #rules-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1100;
+        }
+        #rules-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            color: black;
+        }
+        #game-menu-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 100;
+        }
+        #close-rules-btn {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+        }
+        span{
+        color: #FF0000; 
+        }
+        
+        /* リザルト関連のスタイル */
+        #result-overlay{
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        #result-content{
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            max-width: 250px;
+            color: black;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+    <body>
+        <button id="game-menu-btn">メニュー</button>
+        <div class="deal-area">
+            <div class="game">
+                <div class="deck"></div>
+                <div class="hand" id="dealer-hand">
+                    <h2>Dealer's Hand: <span id="dealer-score">0</span></h2>
+                    <div id="dealer-cards"></div>
+                </div>
+
+            <!-- プレイヤーハンドを拡張 -->
+            <div class="hand" id="player-hand">
+                <h2>Your Hand: <span id="player-score">0</span></h2>
+                <!-- スプリット用のコンテナを追加 -->
+                <div id="player-hands-container">
+                    <div id="player-cards"></div>
+                </div>
+            </div>
+
+            <!-- スプリット時のマルチハンド表示用 -->
+            <div id="split-hands-container" class="split-hands" style="display: none;">
+                <h2 id="hand-of-cards"></h2>
+                <div class="split-hand" id="split-hand-1">
+                    <div class="split-hand-cards" id="split-hand-1-cards"></div>
+                    <div class="split-hand-score" id="split-hand-1-score">Hand 1: 0</div>
+                </div>
+                <div class="split-hand" id="split-hand-2">
+                    <div class="split-hand-cards" id="split-hand-2-cards"></div>
+                    <div class="split-hand-score" id="split-hand-2-score">Hand 2: 0</div>
+                </div>
+            </div>
+
+            <div class="buttons">
+                <!-- 既存のボタン群 -->
+                <div class="game_buttons">
+                    <button id="hit_b" onclick="hit()">ヒット</button>
+                    <button id="stand_b" onclick="stand()">スタンド</button>
+                    <button id="double_b">ダブル</button>
+                    <button id="split_b">スプリット</button>
+                    <button id="insurance_b">インシュランス</button>
+                    <button id="surrender_b">サレンダー</button>
+                    <button id="deal_b">スタート</button>
+                </div>
+            </div>
+            <h2 id="message"></h2>
+        </div>
+    </div>
+
+    <!-- メニュー画面 -->
+    <div id="menu-overlay">
+        <div id="menu-container">
+            <h2>メニュー</h2>
+            <button id="resume-btn" class="menu-button">ゲームに戻る</button>
+            <button id="rules-btn" class="menu-button">ルール説明</button>
+            <button id="title-btn" class="menu-button">タイトルに戻る</button>
+        </div>
+    </div>
+
+    <!-- ルール説明モーダル -->
+    <div id="rules-overlay">
+        <div id="rules-content">
+            <h2>ルール説明</h2>
+            <p>ディーラと対戦形式。手持ちのカードの点数を２１に近づけた方が勝ちというゲームです。<br>点数の付け方は、「２～１０」まではそのままの点数。「J～K」まではすべて１０となります。<br>
+            「A」は１または１１という扱いになります。引ける手持ちは最大５枚までです。<br>ブラックジャック時の倍率は0.5足した値になります。（ベット金額が奇数の場合切り捨て）</p>
+            <h2>用語説明</h2>
+            <p><span>ヒット</span><br>一枚山札から引くこと。<br>
+            <span>ダブル</span><br>ベット額と同額を追加ベットし、山札から一枚引いたのちディーラと勝負すること。<br>
+            <span>スタンド</span><br>手札を固定し、勝負すること。<br>
+            <span>スプリット</span><br>最初に引いた二枚の手札が同じ点数だった場合に手札を二つに分けることができる。<br>
+            <span>インシュランス</span><br>ディーラの見え札が「A」の場合、相手がブラックジャックかどうかにベッド額の半額かけることができる。<br>当たれば、勝敗に関係なくインシュランスに対して賭けた金額の倍もらえる。<br>
+            <span>サレンダー</span><br>自ら負けを認めること。ベット額の半分が手元に戻ってくる。</p><br>
+        </div>
+        <div id="close-rules-btn">閉じる</div>
+    </div>
+    <!-- リザルトモーダル　-->
+    <div id="result-overlay">
+        <div id="result-content">
+            <h2>リザルト</h2>
+            <p>勝者：<span id="winner">---</span><br>
+            ディーラ得点：<span id="score">---</span><br>
+            プレイヤー得点１：<span id="score1">---</span></p>
+            <p class="hidden">プレイヤー得点２：<span id="score2">---</span><br></p>
+            <p>獲得ベット額：<span id="sum">---</span></p>
+        </div>
+        <p>クリックでとじます</p>
+    </div>
+    <!-- 賭け処理関係　-->
+    <div class="player-date">
+        <div class="date">
+            <a>所持金<div id="syozi"></div></a>
+        </div>
+    </div>
+
+    <div class="bet-area" id="bets">
+        <div class="chips">
+            <div class="chip green">1</div>
+            <div class="chip yellow">10</div>
+            <div class="chip blue">50</div>
+            <div class="chip black">100</div>
+            <div class="chip red">500</div>
+            <div class="chip purple">1K</div>
+            <div class="chip orange">5K</div>
+            <div class="chip pink">10K</div>
+        </div>
+        <div class="bet-controls">
+            <div class="bet-display">
+                <label for="bet-amount">Bet</label>
+                <input type="number" id="bet-amount" value="0" readonly>
+            </div>
+            <div class="buttons">
+                <button id="max">Max</button>
+                <button id="min">Min</button>
+                <button id="add">+</button>
+                <button id="subtract">-</button>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        // チップの値を定義
+        const chipValues = {
+            green: 1,
+            yellow: 10,
+            blue: 50,
+            black: 100,
+            red: 500,
+            purple: 1000,
+            orange: 5000,
+            pink: 10000
+        }
+
+        // ベット関連の初期設定
+        let currentBet = 0;
+        let maxBet = 10000;
+        let minBet = 0;
+
+        // メニュー関連の追加スクリプト
+        document.addEventListener('DOMContentLoaded', () => {
+            const gameMenuBtn = document.getElementById('game-menu-btn');
+            const menuOverlay = document.getElementById('menu-overlay');
+            const resumeBtn = document.getElementById('resume-btn');
+            const rulesBtn = document.getElementById('rules-btn');
+            const titleBtn = document.getElementById('title-btn');
+            const rulesOverlay = document.getElementById('rules-overlay');
+            const closeRulesBtn = document.getElementById('close-rules-btn');
+            const resultOverlay = document.getElementById('result-overlay');
+            const resultContent = document.getElementById('result-content');
+            // メニューを開く
+            gameMenuBtn.addEventListener('click', () => {
+                menuOverlay.style.display = 'flex';
+                pauseGame();
+            });
+            // メニューを閉じてゲームに戻る
+            resumeBtn.addEventListener('click', () => {
+                menuOverlay.style.display = 'none';
+                resumeGame();
+            });
+            // ルール説明を表示
+            rulesBtn.addEventListener('click', () => {
+                rulesOverlay.style.display = 'flex';
+            });
+            // ルール説明を閉じる
+            closeRulesBtn.addEventListener('click', () => {
+                rulesOverlay.style.display = 'none';
+            });
+            // タイトル画面に戻る
+            titleBtn.addEventListener('click', () => {
+                // タイトル画面に遷移
+                window.location.href = '../html/home.html';
+            });
+            // ゲーム一時停止関数
+            function pauseGame() {
+                // ゲームの進行を止める処理
+                const gameButtons = document.querySelectorAll('.game_buttons button');
+                gameButtons.forEach(button => {
+                    button.disabled = true;
+                });
+            }
+            // ゲーム再開関数
+            function resumeGame() {
+                // ゲームボタンを再度有効化
+                const gameButtons = document.querySelectorAll('.game_buttons button');
+                gameButtons.forEach(button => {
+                    button.disabled = false;
+                });
+            }
+            // リザルトを閉じる
+            resultOverlay.addEventListener('click', function(event) {
+                // モーダルのコンテンツ部分以外をクリックした場合閉じる
+                if (event.target === resultOverlay) {
+                    resultOverlay.style.display = 'none';
+                }
+            });
+            resultContent.addEventListener('click', function(event) {
+                // モーダルのコンテンツ部分をクリックした場合閉じる
+                if (event.target === resultContent) {
+                    resultOverlay.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

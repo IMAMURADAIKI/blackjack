@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Blackjack Game</title>
+    </head>
+    <style>
+        body{
+            height: 500px;
+            width: 800px;
+        }
+
+        .start{
+            position: fixed;
+            bottom: 150px;
+            right: 295px;
+        }
+
+        .rules{
+            position: fixed;
+            bottom: 110px;
+            right: 295px;
+        }
+
+        button{
+            width: 200px;
+        }
+
+        #back_home {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+        }
+
+        .LeftContent{
+            float: left;
+            width: 20%;
+            font-size: 12px;
+        }
+
+        .RightContent{
+            float: right;
+            width: 80%;
+            font-size: 12px;
+        }
+
+        span{
+        color: #FF0000; 
+        }
+    </style>
+    <body bgcolor="#FFFFFF">
+        <div class="LeftContent">
+            <div id="yogoitiran">
+                <h3>用語一覧</h2>
+                <ol>
+                    <li>ヒット</li>
+                    <li>ダブル</li>
+                    <li>スタンド</li>
+                    <li>スプリット</li>
+                    <li>インシュランス</li>
+                    <li>サレンダー</li>
+                </ol>
+            </div>
+        </div>
+        <div class="RightContent">
+            <h3>ルール説明</h3>
+            <p>ディーラと対戦形式。手持ちのカードの点数を２１に近づけた方が勝ちというゲームです。<br>点数の付け方は、「２～１０」まではそのままの点数。「J～K」まではすべて１０となります。<br>
+            「A」は１または１１という扱いになります。引ける手持ちは最大５枚までです。<br>ブラックジャック時の倍率は0.5足した値になります。（ベット金額が奇数の場合切り捨て）</p>
+            <h3>用語説明</h3>
+            <p><span>ヒット</span><br>一枚山札から引くこと。<br>
+            <span>ダブル</span><br>ベット額と同額を追加ベットし、山札から一枚引いたのちディーラと勝負すること。<br>
+            <span>スタンド</span><br>手札を固定し、勝負すること。<br>
+            <span>スプリット</span><br>最初に引いた二枚の手札が同じ点数だった場合に手札を二つに分けることができる。<br>
+            <span>インシュランス</span><br>ディーラの見え札が「A」の場合、相手がブラックジャックかどうかにベッド額の半額かけることができる。<br>当たれば、勝敗に関係なくインシュランスに対して賭けた金額の倍もらえる。<br>
+            <span>サレンダー</span><br>自ら負けを認めること。ベット額の半分が手元に戻ってくる。</p><br>        </div>
+        <div>
+            <a href="../html/home.html" id="back_home">戻る</a>   
+        </div>
+    </body>
+</html>
