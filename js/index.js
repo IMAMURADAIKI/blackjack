@@ -352,7 +352,7 @@ const split = document.getElementById('split_b').addEventListener('click', () =>
         splitHand2Cards.innerHTML = '';
         splitHand2.forEach((card, index) => {
             const cardImage = document.createElement('img');
-            cardImage.src = `../../cards/${card.value}_${card.suit}.png`;
+            cardImage.src = `../cards/${card.value}_${card.suit}.png`;
             cardImage.classList.add('card-image');
             splitHand2Cards.appendChild(cardImage);
         });
