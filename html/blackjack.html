@@ -79,6 +79,26 @@
         
         /* リザルト関連のスタイル */
         #result-overlay{
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            display: none;
+            z-index: 1000;
+        }
+        #result-content{
+            position: absolute; /* 要素を自由に配置 */
+            top: 50px; /* 画面下からの距離 */
+            left: 25px;
+            text-align: center;
+            max-width: 250px;
+        }
+        .hidden {
+            display: none;
+        }
+
+        /* アラート関連のスタイル */
+        #alert-overlay{
             position: fixed;
             top: 0;
             left: 0;
@@ -90,16 +110,21 @@
             align-items: center;
             z-index: 1000;
         }
-        #result-content{
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            max-width: 250px;
-            color: black;
+
+        #alert-content {
+            font: 65px;
+            position: absolute; /* 要素を自由に配置 */
+            top: 150px; /* 画面下からの距離 */
+            left: 50%; /* 中央に配置 */
+            transform: translateX(-50%); /* 中央揃えのために調整 */
         }
-        .hidden {
-            display: none;
+
+        h4{
+            font-size: 30px;
+        }
+
+        p1{
+            font-size: 22px;
         }
     </style>
     <body>
@@ -171,22 +196,30 @@
             <span>ダブル</span><br>ベット額と同額を追加ベットし、山札から一枚引いたのちディーラと勝負すること。<br>
             <span>スタンド</span><br>手札を固定し、勝負すること。<br>
             <span>スプリット</span><br>最初に引いた二枚の手札が同じ点数だった場合に手札を二つに分けることができる。<br>
-            <span>インシュランス</span><br>ディーラの見え札が「A」の場合、相手がブラックジャックかどうかにベッド額の半分の保険をかけることができる。<br>当たれば、勝敗に関係なくインシュランスに対して賭けた金額の倍もらえる。違った場合は、その状態の得点で勝敗を決める<br>
+            <span>インシュランス</span><br>ディーラの見え札が「A」の場合、相手がブラックジャックかどうかにベッド額の半額かけることができる。<br>当たれば、勝敗に関係なくインシュランスに対して賭けた金額の倍もらえる。<br>
             <span>サレンダー</span><br>自ら負けを認めること。ベット額の半分が手元に戻ってくる。</p><br>
         </div>
         <div id="close-rules-btn">閉じる</div>
     </div>
+    <!-- アラートモーダル -->
+    <div id="alert-overlay">
+        <div id="alert-content">
+            <h2>❕警告メッセージ❕</h2>
+            <span2 id="alert-message">---</span2>
+            <p>クリックでとじます</p>    
+        </div>
+    </div>
     <!-- リザルトモーダル　-->
     <div id="result-overlay">
         <div id="result-content">
-            <h2>リザルト</h2>
-            <p>勝者：<span id="winner">---</span><br>
+            <h4>リザルト</h4>
+            <p1>結果：<span id="winner">---</span><br>
             ディーラ得点：<span id="score">---</span><br>
-            プレイヤー得点１：<span id="score1">---</span></p>
-            <p class="hidden">プレイヤー得点２：<span id="score2">---</span><br></p>
-            <p>獲得ベット額：<span id="sum">---</span></p>
+            プレイヤー得点１：<span id="score1">---</span></p1>
+            <p1 class="hidden">プレイヤー得点２：<span id="score2">---</span></p1><br>
+            <p1>獲得ベット額：<span id="sum">---</span></p1>
+            <p>クリックでとじます</p>
         </div>
-        <p>クリックでとじます</p>
     </div>
     <!-- 賭け処理関係　-->
     <div class="player-date">
@@ -236,6 +269,7 @@
         let currentBet = 0;
         let maxBet = 10000;
         let minBet = 0;
+        let drawBet = 0;
 
         // メニュー関連の追加スクリプト
         document.addEventListener('DOMContentLoaded', () => {
@@ -248,6 +282,7 @@
             const closeRulesBtn = document.getElementById('close-rules-btn');
             const resultOverlay = document.getElementById('result-overlay');
             const resultContent = document.getElementById('result-content');
+            const alertOverlay = document.getElementById('alert-overlay');
             // メニューを開く
             gameMenuBtn.addEventListener('click', () => {
                 menuOverlay.style.display = 'flex';
@@ -298,6 +333,13 @@
                 // モーダルのコンテンツ部分をクリックした場合閉じる
                 if (event.target === resultContent) {
                     resultOverlay.style.display = 'none';
+                }
+            });
+            // リザルトを閉じる
+             alertOverlay.addEventListener('click', function(event) {
+                // モーダルのコンテンツ部分以外をクリックした場合閉じる
+                if (event.target === alertOverlay) {
+                    alertOverlay.style.display = 'none';
                 }
             });
         });
