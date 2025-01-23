@@ -66,9 +66,11 @@ function addBet(amount) {
         currentBet += amount;
         updateBetDisplay();
     } else if(maxBet === 0) {
-        alert('ベットコインが不足しています！')
+        document.getElementById('alert-message').textContent = 'ベットコインが不足しています！';
+        document.getElementById('alert-overlay').style.display = 'block';
     } else {
-        alert('これ以上ベットできません！');
+        document.getElementById('alert-message').textContent = 'これ以上ベットできません！';
+        document.getElementById('alert-overlay').style.display = 'block';
     }
 }
 
