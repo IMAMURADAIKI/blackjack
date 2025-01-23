@@ -72,9 +72,11 @@ document.getElementById('deal_b').addEventListener('click', () => {
             if(maxBet >= currentBet){document.getElementById('split_b').style.display = 'block';}
         }    
     } else if(maxBet === 0){
-        alert("掛け金がないため、プレイできません…")
+        document.getElementById('alert-message').textContent = 'かけ金がなくなりました…';
+        document.getElementById('alert-overlay').style.display = 'block';
     } else {
-        alert("掛け金を設定してください！！")
+        document.getElementById('alert-message').textContent = 'かけ金を設定してください！！';
+        document.getElementById('alert-overlay').style.display = 'block';
     }
 });
 // デッキ作成＆カード配布etc.
@@ -115,7 +117,7 @@ function calculateHandValue(hand) {
 
 function addCardToHand(card, hand, index = 0) {
     const cardImage = document.createElement('img');
-    cardImage.src = `../cards/${card.value}_${card.suit}.png`;
+    cardImage.src = `../../cards/${card.value}_${card.suit}.png`;
     cardImage.classList.add('card-image');
     cardImage.style.animationDelay = `${index * 0.2}s`;
     cardImage.classList.add('deal-animation');
@@ -156,7 +158,7 @@ function dealInitialCards() {
     });
     addCardToHand(dealerHand[0], 'dealer', 0);
     dealerHiddenCardElement = document.createElement('img');
-    dealerHiddenCardElement.src = '../cards/back.png';
+    dealerHiddenCardElement.src = '../../cards/back.png';
     dealerHiddenCardElement.classList.add('card-image', 'hidden-card');
     document.getElementById('dealer-cards').appendChild(dealerHiddenCardElement);
     updateScores();
@@ -343,7 +345,7 @@ const split = document.getElementById('split_b').addEventListener('click', () =>
         splitHand1Cards.innerHTML = '';
         splitHand1.forEach((card, index) => {
             const cardImage = document.createElement('img');
-            cardImage.src = `../cards/${card.value}_${card.suit}.png`;
+            cardImage.src = `../../cards/${card.value}_${card.suit}.png`;
             cardImage.classList.add('card-image');
             splitHand1Cards.appendChild(cardImage);
         });
@@ -352,7 +354,7 @@ const split = document.getElementById('split_b').addEventListener('click', () =>
         splitHand2Cards.innerHTML = '';
         splitHand2.forEach((card, index) => {
             const cardImage = document.createElement('img');
-            cardImage.src = `../cards/${card.value}_${card.suit}.png`;
+            cardImage.src = `../../cards/${card.value}_${card.suit}.png`;
             cardImage.classList.add('card-image');
             splitHand2Cards.appendChild(cardImage);
         });
