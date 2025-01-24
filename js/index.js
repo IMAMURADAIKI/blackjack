@@ -139,7 +139,7 @@ function calculateHandValue(hand) {
 
 function addCardToHand(card, hand, index = 0) {
     const cardImage = document.createElement('img');
-    cardImage.src = `../../cards/${card.value}_${card.suit}.png`;
+    cardImage.src = `../cards/${card.value}_${card.suit}.png`;
     cardImage.classList.add('card-image');
     cardImage.style.animationDelay = `${index * 0.2}s`;
     cardImage.classList.add('deal-animation');
@@ -180,7 +180,7 @@ function dealInitialCards() {
     });
     addCardToHand(dealerHand[0], 'dealer', 0);
     dealerHiddenCardElement = document.createElement('img');
-    dealerHiddenCardElement.src = '../../cards/back.png';
+    dealerHiddenCardElement.src = '../cards/back.png';
     dealerHiddenCardElement.classList.add('card-image', 'hidden-card');
     document.getElementById('dealer-cards').appendChild(dealerHiddenCardElement);
     updateScores();
@@ -213,7 +213,7 @@ function hit() {
         }
         // カードを表示
         const cardImage = document.createElement('img');
-        cardImage.src = `../../cards/${card.value}_${card.suit}.png`;
+        cardImage.src = `../cards/${card.value}_${card.suit}.png`;
         cardImage.classList.add('card-image');
         targetCardsElement.appendChild(cardImage);
         // スコアを更新
@@ -387,7 +387,7 @@ const split = document.getElementById('split_b').addEventListener('click', () =>
         splitHand1Cards.innerHTML = '';
         splitHand1.forEach((card, index) => {
             const cardImage = document.createElement('img');
-            cardImage.src = `../../cards/${card.value}_${card.suit}.png`;
+            cardImage.src = `../cards/${card.value}_${card.suit}.png`;
             cardImage.classList.add('card-image');
             splitHand1Cards.appendChild(cardImage);
         });
@@ -396,7 +396,7 @@ const split = document.getElementById('split_b').addEventListener('click', () =>
         splitHand2Cards.innerHTML = '';
         splitHand2.forEach((card, index) => {
             const cardImage = document.createElement('img');
-            cardImage.src = `../../cards/${card.value}_${card.suit}.png`;
+            cardImage.src = `../cards/${card.value}_${card.suit}.png`;
             cardImage.classList.add('card-image');
             splitHand2Cards.appendChild(cardImage);
         });
