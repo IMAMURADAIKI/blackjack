@@ -242,12 +242,12 @@ function hit() {
             const playerValue = calculateHandValue(playerHand);
             updateScores();
             if (playerValue > 21) {
-                document.getElementById('message').textContent = 'Bust!';
+                // document.getElementById('message').textContent = 'Bust!';
                 stand();
                 gameOver = true;
             }
             if (calculateHandValue(playerHand) === 21) {
-                document.getElementById('message').textContent = 'Blackjack! Checking Dealer...';
+                // document.getElementById('message').textContent = 'Blackjack! Checking Dealer...';
                 blackjack1 = true;
                 stand();
             }    
