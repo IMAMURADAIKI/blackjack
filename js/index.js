@@ -358,6 +358,7 @@ const double = document.getElementById('double_b').addEventListener('click', () 
         if(currentSplitHand === 1){
             double1 = true;
             Bet1 += currentBet;
+            document.getElementById('hit_b').style.display = 'block';
         } else if(currentSplitHand === 2){
             double2 = true;
             Bet2 += currentBet;
