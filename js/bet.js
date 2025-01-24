@@ -114,6 +114,10 @@ function calculateWinnings(fight1, blackjack1, draw1, fight2, blackjack2, draw2,
         totalWinnings = bet1;
     }
 
+    if(totalWinnings > 0){
+        sound3.play();
+    }
+
     document.getElementById('sum').textContent = totalWinnings;
 }
 

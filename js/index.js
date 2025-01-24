@@ -66,16 +66,38 @@ document.getElementById('deal_b').addEventListener('click', () => {
         Sum = 0;
         winBet = 0;
 
+        sound1.pause();
+        sound1.currentTime = 0;
+        sound2.pause();
+        sound2.currentTime = 0;
+        sound3.pause();
+        sound3.currentTime = 0;
+        sound4.pause();
+        sound4.currentTime = 0;
+        zunda1.pause();
+        zunda1.currentTime = 0;
+        zunda2.pause();
+        zunda2.currentTime = 0;
+        zunda3.pause();
+        zunda3.currentTime = 0;
+        zunda4.pause();
+        zunda4.currentTime = 0;
+        zunda5.pause();
+        zunda5.currentTime = 0;
+
         createDeck();
+        sound4.play();
         dealInitialCards();
         if((playerHand[0].value === playerHand[1].value) || (['10', '11', '12', '13'].includes(playerHand[0].value) && ['10', '11', '12', '13'].includes(playerHand[1].value))){
             if(maxBet >= currentBet){document.getElementById('split_b').style.display = 'block';}
         }    
     } else if(maxBet === 0){
-        document.getElementById('alert-message').textContent = 'かけ金がなくなりました…';
+        zunda2.play();
+        document.getElementById('alert-message').textContent = '一文無しはさっさと帰るのだ！！';
         document.getElementById('alert-overlay').style.display = 'block';
     } else {
-        document.getElementById('alert-message').textContent = 'かけ金を設定してください！！';
+        zunda1.play();
+        document.getElementById('alert-message').textContent = 'さっさと、かけ金をかけるのだ！！';
         document.getElementById('alert-overlay').style.display = 'block';
     }
 });
@@ -117,7 +139,7 @@ function calculateHandValue(hand) {
 
 function addCardToHand(card, hand, index = 0) {
     const cardImage = document.createElement('img');
-    cardImage.src = `../cards/${card.value}_${card.suit}.png`;
+    cardImage.src = `../../cards/${card.value}_${card.suit}.png`;
     cardImage.classList.add('card-image');
     cardImage.style.animationDelay = `${index * 0.2}s`;
     cardImage.classList.add('deal-animation');
@@ -158,7 +180,7 @@ function dealInitialCards() {
     });
     addCardToHand(dealerHand[0], 'dealer', 0);
     dealerHiddenCardElement = document.createElement('img');
-    dealerHiddenCardElement.src = '../cards/back.png';
+    dealerHiddenCardElement.src = '../../cards/back.png';
     dealerHiddenCardElement.classList.add('card-image', 'hidden-card');
     document.getElementById('dealer-cards').appendChild(dealerHiddenCardElement);
     updateScores();
@@ -184,13 +206,14 @@ function hit() {
         const currentHand = currentSplitHand === 1 ? splitHand1 : splitHand2;
         const targetCardsElement = currentSplitHand === 1 ? document.getElementById('split-hand-1-cards') : document.getElementById('split-hand-2-cards');
         if(splitnum < 5) {
+            sound1.play();
             card = drawCard(); // カードをドロー
             currentHand.push(card);
             splitnum++;
         }
         // カードを表示
         const cardImage = document.createElement('img');
-        cardImage.src = `../cards/${card.value}_${card.suit}.png`;
+        cardImage.src = `../../cards/${card.value}_${card.suit}.png`;
         cardImage.classList.add('card-image');
         targetCardsElement.appendChild(cardImage);
         // スコアを更新
@@ -212,6 +235,7 @@ function hit() {
     } else {
         // 通常のヒット処理
         if(playerHand.length < 5) {
+            sound1.play();
             const card = drawCard();
             playerHand.push(card);
             addCardToHand(card, 'player', playerHand.length - 1);
@@ -243,48 +267,66 @@ function stand() {
         // 通常のスタンド処理
         setTimeout(() => {    
             // 最初の2枚目のカードをめくる
+            sound2.play();
             document.getElementById('dealer-cards').removeChild(dealerHiddenCardElement);
             addCardToHand(dealerHand[1], 'dealer', 1);
             // この時点でディーラーの点数を更新
             document.getElementById('dealer-score').textContent = calculateHandValue(dealerHand);
             let dealerValue = calculateHandValue(dealerHand); 
-            document.getElementById("score").textContent = dealerValue; 
+            if(dealerValue === 21){
+                zunda3.play();
+            }
+            document.getElementById("score").textContent = dealerValue;
             // ディーラーのカードを最大5枚まで制限
             while (dealerValue < 17 && dealerHand.length < 5 && !insuranceAvailable) {
+                sound1.play();
                 const card = drawCard();
                 dealerHand.push(card);
                 addCardToHand(card, 'dealer', dealerHand.length - 1);
+                
                 dealerValue = calculateHandValue(dealerHand);
+                if(dealerValue === 21){
+                    zunda3.play();
+                }    
                 document.getElementById("score").textContent = dealerValue;
 
                 // 追加のカードを引くたびにスコアを更新
                 document.getElementById('dealer-score').textContent = dealerValue;
             }
+            let time = dealerHand.length >= 3 ? 1500 : 1000;
 
-            if(dealerValue != 21){
-                insuranceAvailable = false;
-            }
+            setTimeout(() => {
+                if(dealerValue != 21){
+                    insuranceAvailable = false;
+                }
 
-            const handValue = calculateHandValue(playerHand);
-            fight1 = determineFight(dealerValue, handValue);
-            
-            // ハンドが21を超えた場合は敗北
-            if (handValue > 21) {
-                fight1 = false;
-            }
-            
-            // 勝者の判定
-            let win = handValue === dealerValue ? 'draw' : handValue > 21 ? 'Dealer win' : fight1 ? 'Player win' : 'Dealer win';
-            resultdisplay(win);
+                const handValue = calculateHandValue(playerHand);
+                fight1 = determineFight(dealerValue, handValue);
+                
+                // ハンドが21を超えた場合は敗北
+                if (handValue > 21) {
+                    fight1 = false;
+                }
+                
+                // 勝者の判定
+                let win = (handValue === dealerValue) && (handValue <= 21) ? 'draw' : handValue > 21 ? 'Dealer win' : fight1 ? 'Player win' : 'Dealer win';
+                resultdisplay(win);
 
-            draw1 = (handValue === dealerValue && handValue <= 21) ? true : false;
+                draw1 = (handValue === dealerValue) ? true : false;
 
-            calculateWinnings(fight1, blackjack1, draw1, fight2, blackjack2, draw2, insuranceAvailable, Bet1, Bet2);
-            
-            gameOver = true;
+                calculateWinnings(fight1, blackjack1, draw1, fight2, blackjack2, draw2, insuranceAvailable, Bet1, Bet2);
+                
+                gameOver = true;
 
-            document.getElementById('result-overlay').style.display = 'block';
-            document.getElementById("score1").textContent = handValue;
+                if(fight1){
+                    zunda4.play();
+                } else if(!draw1){
+                    zunda5.play();
+                }
+                document.getElementById('result-overlay').style.display = 'block';
+                document.getElementById("score1").textContent = handValue; 
+            }, time);
+
             reset();
             timeset();        
         }, 1000);
@@ -345,7 +387,7 @@ const split = document.getElementById('split_b').addEventListener('click', () =>
         splitHand1Cards.innerHTML = '';
         splitHand1.forEach((card, index) => {
             const cardImage = document.createElement('img');
-            cardImage.src = `../cards/${card.value}_${card.suit}.png`;
+            cardImage.src = `../../cards/${card.value}_${card.suit}.png`;
             cardImage.classList.add('card-image');
             splitHand1Cards.appendChild(cardImage);
         });
@@ -354,7 +396,7 @@ const split = document.getElementById('split_b').addEventListener('click', () =>
         splitHand2Cards.innerHTML = '';
         splitHand2.forEach((card, index) => {
             const cardImage = document.createElement('img');
-            cardImage.src = `../cards/${card.value}_${card.suit}.png`;
+            cardImage.src = `../../cards/${card.value}_${card.suit}.png`;
             cardImage.classList.add('card-image');
             splitHand2Cards.appendChild(cardImage);
         });
@@ -445,6 +487,12 @@ function resolveSplitHands() {
     //document.getElementById('message').textContent = `Hand 1: ${hand1Value} (${result1}), Hand 2: ${hand2Value} (${result2})`;
     // bet処理
     determineGameOutcome(dealerValue, hand1Value, hand2Value, blackjack1, double1, blackjack2, double2)    // ゲーム終了処理
+
+    if(!fight1 && !fight2){
+        zunda5.play();
+    } else{
+        zunda4.play();
+    }
 
     gameOver = true;
     document.getElementById('score').textContent = dealerValue;
