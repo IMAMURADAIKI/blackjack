@@ -211,7 +211,7 @@ function dealInitialCards() {
 // ボタンが押された時の処理
 // ヒット
 function hit() {
-    if(gameOver) return;
+    if(gameOver || insuranceAvailable) return;
     document.getElementById('double_b').style.display = 'none';
     document.getElementById('split_b').style.display = 'none';
     document.getElementById('insurance_b').style.display = 'none';
@@ -263,6 +263,7 @@ function hit() {
             }
             if (calculateHandValue(playerHand) === 21) {
                 // document.getElementById('message').textContent = 'Blackjack! Checking Dealer...';
+                document.getElementById('hit_b').style.display = 'none';
                 blackjack1 = true;
                 stand();
             }    
