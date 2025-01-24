@@ -84,7 +84,11 @@ document.getElementById('deal_b').addEventListener('click', () => {
         zunda4.currentTime = 0;
         zunda5.pause();
         zunda5.currentTime = 0;
-
+        zunda6.pause();
+        zunda6.currentTime = 0;
+        zunda7.pause();
+        zunda7.currentTime = 0;
+        
         createDeck();
         sound4.play();
         dealInitialCards();
