@@ -344,6 +344,7 @@ function stand() {
 }
 // ダブル
 const double = document.getElementById('double_b').addEventListener('click', () => {
+    document.getElementById('hit_b').style.display = 'none';
     if (gameOver) return;
     if(currentBet <= maxBet && maxBet != 0){
         document.getElementById('insurance_b').style.display = 'none';
