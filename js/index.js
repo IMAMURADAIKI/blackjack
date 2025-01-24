@@ -247,7 +247,7 @@ function hit() {
         } else if((currentSplitHand === 1 && double1 === true) || (currentSplitHand === 2 && double2 === true)) {
             switchToNextHand();
         }
-    } else {
+    } else if(!double1){
         // 通常のヒット処理
         if(playerHand.length < 5) {
             sound1.play();
