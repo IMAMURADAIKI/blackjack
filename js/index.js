@@ -380,6 +380,9 @@ const split = document.getElementById('split_b').addEventListener('click', () =>
         document.getElementById('surrender_b').style.display = 'none';
         document.querySelector('#player-hand h2').style.display = 'none';
         document.getElementById('hand-of-cards').textContent = 'hand1の行動選択';
+        if(currentBet > maxBet){
+            document.getElementById('double_b').style.display = 'none';
+        }
         // プレイヤーの最初のハンドを二つに分割
         splitHand1 = [playerHand[0]];
         splitHand2 = [playerHand[1]];
@@ -436,7 +439,12 @@ const split = document.getElementById('split_b').addEventListener('click', () =>
 });
 
 function switchToNextHand() {
-    if(maxBet >= currentBet){ document.getElementById('double_b').style.display = 'block';}
+    if(maxBet >= currentBet){
+        document.getElementById('double_b').style.display = 'block';
+    } else {
+        document.getElementById('double_b').style.display = 'none';
+    }
+
     splitnum = 2;
     if(currentSplitHand === 1) {
         // 最初のハンドが終了したら2番目のハンドへ
