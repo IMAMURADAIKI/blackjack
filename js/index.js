@@ -199,6 +199,11 @@ function dealInitialCards() {
     }
     if (calculateHandValue(playerHand) === 21) {
         document.getElementById('message').textContent = 'Blackjack! Checking Dealer...';
+        document.getElementById('hit_b').style.display = 'none';
+        document.getElementById('double_b').style.display = 'none';
+        document.getElementById('stand_b').style.display = 'none';
+        document.getElementById('insurance_b').style.display = 'none';
+        document.getElementById('surrender_b').style.display = 'none';
         blackjack1 = true;
         stand();
     }
