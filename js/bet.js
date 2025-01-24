@@ -66,10 +66,12 @@ function addBet(amount) {
         currentBet += amount;
         updateBetDisplay();
     } else if(maxBet === 0) {
-        document.getElementById('alert-message').textContent = 'ベットコインが不足しています！';
+        zunda6.play();
+        document.getElementById('alert-message').textContent = 'お金がないからかけることができないのだ！';
         document.getElementById('alert-overlay').style.display = 'block';
     } else {
-        document.getElementById('alert-message').textContent = 'これ以上ベットできません！';
+        zunda7.play();
+        document.getElementById('alert-message').textContent = 'これ以上かけることができないのだ！';
         document.getElementById('alert-overlay').style.display = 'block';
     }
 }
