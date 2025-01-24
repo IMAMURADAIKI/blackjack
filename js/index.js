@@ -28,6 +28,7 @@ let insuranceAvailable = false;
 
 sound0.pause();
 sound0.currentTime = 0;
+sound0.volume = 0.7;
 sound0.play();
 // スタート
 document.getElementById('deal_b').addEventListener('click', () => {
