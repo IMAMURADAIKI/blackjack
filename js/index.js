@@ -247,7 +247,26 @@ function hit() {
         } else if((currentSplitHand === 1 && double1 === true) || (currentSplitHand === 2 && double2 === true)) {
             switchToNextHand();
         }
-    } else {
+    }else if(double1){
+        // 通常ダブル時のヒット処理
+        sound1.play();
+        const card = drawCard();
+        playerHand.push(card);
+        addCardToHand(card, 'player', playerHand.length - 1);
+        const playerValue = calculateHandValue(playerHand);
+        updateScores();
+        if (playerValue > 21) {
+            // document.getElementById('message').textContent = 'Bust!';
+            stand();
+            gameOver = true;
+        }
+        if (calculateHandValue(playerHand) === 21) {
+            // document.getElementById('message').textContent = 'Blackjack! Checking Dealer...';
+            document.getElementById('hit_b').style.display = 'none';
+            blackjack1 = true;
+            stand();
+        }    
+    }else {
         // 通常のヒット処理
         if(playerHand.length < 5) {
             sound1.play();
@@ -350,7 +369,7 @@ function stand() {
 }
 // ダブル
 function double(){
-    event.stopPropagation(); // これにより、親要素へのイベント伝播を防ぐ
+    
     if (gameOver) return;
     document.getElementById('hit_b').style.display = 'none';
     document.getElementById('insurance_b').style.display = 'none';
