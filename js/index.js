@@ -218,6 +218,7 @@ function hit() {
     document.getElementById('surrender_b').style.display = 'none';
     // スプリットモード時のヒット処理
     if(isSplitMode) {
+        document.getElementById('hit_b').style.display = 'block';
         const currentHand = currentSplitHand === 1 ? splitHand1 : splitHand2;
         const targetCardsElement = currentSplitHand === 1 ? document.getElementById('split-hand-1-cards') : document.getElementById('split-hand-2-cards');
         if(splitnum < 5) {
@@ -378,7 +379,6 @@ function double(){
     if(currentSplitHand === 1){
         double1 = true;
         Bet1 += currentBet;
-        document.getElementById('hit_b').style.display = 'block';
     } else if(currentSplitHand === 2){
         double2 = true;
         Bet2 += currentBet;
