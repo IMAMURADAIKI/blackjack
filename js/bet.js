@@ -68,7 +68,7 @@ function setCustomBet() {
         currentBet = customBetValue;
         updateBetDisplay();
     } else {
-        showErrorMessage('無効なベット額です');
+        showErrorMessage('無効なベット額なのだ');
     }
 }
 
@@ -99,7 +99,7 @@ function addBet(amount) {
         currentBet += adjustedAmount;
         updateBetDisplay();
     } else {
-        showErrorMessage('最大ベット額を超えています');
+        showErrorMessage('最大ベット額を超えているのだ');
     }
 }
 
@@ -122,9 +122,6 @@ function updateBetDisplay() {
 
 // エラーメッセージ表示関数
 function showErrorMessage(message) {
-    // 音声再生（zunda6は既存の音声変数）
-    zunda6.play();
-    
     // アラートオーバーレイ
     const alertOverlay = document.getElementById('alert-overlay');
     const alertMessage = document.getElementById('alert-message');
