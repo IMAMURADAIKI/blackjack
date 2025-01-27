@@ -99,8 +99,13 @@ function addBet(amount) {
         currentBet += adjustedAmount;
         updateBetDisplay();
     } else {
-        zunda7.play();
-        showErrorMessage('これ以上かけることができないのだ');
+        if(maxBet === 0){
+            zunda6.play();
+            showErrorMessage('お金がないから、かけることができないのだ');
+        } else {
+            zunda7.play();
+            showErrorMessage('これ以上かけることができないのだ');
+        }
     }
 }
 
