@@ -99,7 +99,8 @@ function addBet(amount) {
         currentBet += adjustedAmount;
         updateBetDisplay();
     } else {
-        showErrorMessage('最大ベット額を超えているのだ');
+        zunda7.play();
+        showErrorMessage('これ以上かけることができないのだ');
     }
 }
 
