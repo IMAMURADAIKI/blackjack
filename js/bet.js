@@ -1,9 +1,11 @@
 // DOM要素の取得
 let betAmount = document.getElementById('bet-amount');
 let maxButton = document.getElementById('max');
+let halfButton = document.getElementById('half');
 let minButton = document.getElementById('min');
 let addButton = document.getElementById('add');
 let subtractButton = document.getElementById('subtract');
+let customBetButton = document.getElementById('set-custom-bet');
 
 // 初期表示設定
 document.getElementById('syozi').textContent = maxBet;
@@ -11,14 +13,15 @@ document.getElementById('syozi').textContent = maxBet;
 // イベントリスナーの設定
 setupEventListeners();
 
-
 // イベントリスナーをセットアップするメソッド
 function setupEventListeners() {
     const actions = {
         'max': setMaxBet,
+        'half': setHalfBet,
         'min': setMinBet,
         'add': incrementBet,
-        'subtract': decrementBet
+        'subtract': decrementBet,
+        'set-custom-bet': setCustomBet
     };
 
     Object.keys(actions).forEach(id => {
@@ -32,9 +35,21 @@ function setupEventListeners() {
         });
     });
 }
+
+// ベットステップを取得する関数
+function getBetStep(currentMaxBet) {
+    return betSteps.find(step => currentMaxBet <= step.max).step;
+}
+
 // 最大ベットに設定
 function setMaxBet() {
     currentBet = maxBet;
+    updateBetDisplay();
+}
+
+// Half Betを設定する関数
+function setHalfBet() {
+    currentBet = Math.floor(maxBet / 2);
     updateBetDisplay();
 }
 
@@ -44,35 +59,47 @@ function setMinBet() {
     updateBetDisplay();
 }
 
-// ベットを1増やす
+// カスタムベットを設定する関数
+function setCustomBet() {
+    const customBetInput = document.getElementById('custom-bet');
+    const customBetValue = parseInt(customBetInput.value);
+
+    if (!isNaN(customBetValue) && customBetValue >= minBet && customBetValue <= maxBet) {
+        currentBet = customBetValue;
+        updateBetDisplay();
+    } else {
+        showErrorMessage('無効なベット額です');
+    }
+}
+
+// ベットを1増やす（ステップに応じて）
 function incrementBet() {
-    if (currentBet < maxBet) {
-        currentBet += 1;
+    const step = getBetStep(maxBet);
+    if (currentBet + step <= maxBet) {
+        currentBet += step;
         updateBetDisplay();
     }
 }
 
-// ベットを1減らす
+// ベットを1減らす（ステップに応じて）
 function decrementBet() {
-    if (currentBet > minBet) {
-        currentBet -= 1;
+    const step = getBetStep(maxBet);
+    if (currentBet - step >= minBet) {
+        currentBet -= step;
         updateBetDisplay();
     }
 }
 
 // ベット額を増やす
 function addBet(amount) {
-    if (currentBet + amount <= maxBet) {
-        currentBet += amount;
+    const step = getBetStep(maxBet);
+    const adjustedAmount = Math.floor(amount / step) * step;
+
+    if (currentBet + adjustedAmount <= maxBet) {
+        currentBet += adjustedAmount;
         updateBetDisplay();
-    } else if(maxBet === 0) {
-        zunda6.play();
-        document.getElementById('alert-message').textContent = 'お金がないからかけることができないのだ！';
-        document.getElementById('alert-overlay').style.display = 'block';
     } else {
-        zunda7.play();
-        document.getElementById('alert-message').textContent = 'これ以上かけることができないのだ！';
-        document.getElementById('alert-overlay').style.display = 'block';
+        showErrorMessage('最大ベット額を超えています');
     }
 }
 
@@ -91,6 +118,19 @@ function updateBetDisplay() {
             document.getElementById('syozi').textContent = maxBet;    
         }
     }
+}
+
+// エラーメッセージ表示関数
+function showErrorMessage(message) {
+    // 音声再生（zunda6は既存の音声変数）
+    zunda6.play();
+    
+    // アラートオーバーレイ
+    const alertOverlay = document.getElementById('alert-overlay');
+    const alertMessage = document.getElementById('alert-message');
+    
+    alertMessage.textContent = message;
+    alertOverlay.style.display = 'block';
 }
 
 // 以下、勝敗によるベット処理
