@@ -350,8 +350,9 @@ function stand() {
 }
 // ダブル
 function double(){
-    document.getElementById('hit_b').style.display = 'none';
+    event.stopPropagation(); // これにより、親要素へのイベント伝播を防ぐ
     if (gameOver) return;
+    document.getElementById('hit_b').style.display = 'none';
     document.getElementById('insurance_b').style.display = 'none';
     maxBet -= currentBet;
     document.getElementById('syozi').textContent = maxBet;    
