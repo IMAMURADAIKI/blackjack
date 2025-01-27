@@ -555,6 +555,7 @@ const insurance = document.getElementById('insurance_b').addEventListener('click
         document.getElementById('syozi').textContent = maxBet;
         insuranceAvailable = true;
         document.getElementById('hit_b').style.display = 'none';
+        document.getElementById('double_b').style.display = 'none';
         document.getElementById('insurance_b').style.display = 'none';
         document.getElementById('split_b').style.display = 'none';
         stand();
