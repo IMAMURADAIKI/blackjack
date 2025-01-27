@@ -211,7 +211,7 @@ function dealInitialCards() {
 // ボタンが押された時の処理
 // ヒット
 function hit() {
-    if(gameOver || insuranceAvailable) return;
+    if(gameOver) return;
     document.getElementById('double_b').style.display = 'none';
     document.getElementById('split_b').style.display = 'none';
     document.getElementById('insurance_b').style.display = 'none';
@@ -534,6 +534,7 @@ const insurance = document.getElementById('insurance_b').addEventListener('click
         maxBet -= Math.floor(currentBet/2);
         document.getElementById('syozi').textContent = maxBet;
         insuranceAvailable = true;
+        document.getElementById('hit_b').style.display = 'none';
         document.getElementById('insurance_b').style.display = 'none';
         document.getElementById('split_b').style.display = 'none';
         stand();
