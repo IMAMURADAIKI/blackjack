@@ -352,7 +352,6 @@ function stand() {
 const double = document.getElementById('double_b').addEventListener('click', () => {
     document.getElementById('hit_b').style.display = 'none';
     if (gameOver) return;
-    if(currentBet <= maxBet){
         document.getElementById('insurance_b').style.display = 'none';
         maxBet -= currentBet;
         document.getElementById('syozi').textContent = maxBet;    
@@ -368,7 +367,6 @@ const double = document.getElementById('double_b').addEventListener('click', () 
         if (!isSplitMode) {
             stand();
         }
-    }
 });
 // スプリット
 const split = document.getElementById('split_b').addEventListener('click', () => {
