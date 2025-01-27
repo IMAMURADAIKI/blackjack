@@ -110,7 +110,7 @@
             <a>所持金<div id="syozi"></div></a>
         </div>
     </div>
-
+    
     <div class="bet-area" id="bets">
         <div class="chips">
             <div class="chip green">1</div>
@@ -129,9 +129,12 @@
             </div>
             <div class="buttons">
                 <button id="max">Max</button>
+                <button id="half">Half</button>
                 <button id="min">Min</button>
                 <button id="add">+</button>
                 <button id="subtract">-</button>
+                <input type="number" id="custom-bet" placeholder="任意のベット額">
+                <button id="set-custom-bet">Set</button>
             </div>
         </div>
     </div>
@@ -152,19 +155,28 @@
         const zunda7 = new Audio('../sounds/zunda7.wav');
         // チップの値を定義
         const chipValues = {
-            green: 1,
-            yellow: 10,
-            blue: 50,
-            black: 100,
-            red: 500,
-            purple: 1000,
-            orange: 5000,
-            pink: 10000
-        }
-
-        // ベット関連の初期設定
+            'green': 1,
+            'yellow': 10,
+            'blue': 50,
+            'black': 100,
+            'red': 500,
+            'purple': 1000,
+            'orange': 5000,
+            'pink': 10000
+        };
+        
+        // ベットステップを定義
+        let betSteps = [
+            { max: 1000, step: 1 },
+            { max: 10000, step: 10 },
+            { max: 100000, step: 100 },
+            { max: 1000000, step: 1000 },
+            { max: Infinity, step: 10000 }
+        ];
+        
+        // グローバル変数
         let currentBet = 0;
-        let maxBet = 10000;
+        let maxBet = 100000; // 初期所持金
         let minBet = 0;
         let drawBet = 0;
 
