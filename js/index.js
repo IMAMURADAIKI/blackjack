@@ -349,25 +349,25 @@ function stand() {
     }
 }
 // ダブル
-const double = document.getElementById('double_b').addEventListener('click', () => {
+function double(){
     document.getElementById('hit_b').style.display = 'none';
     if (gameOver) return;
-        document.getElementById('insurance_b').style.display = 'none';
-        maxBet -= currentBet;
-        document.getElementById('syozi').textContent = maxBet;    
-        if(currentSplitHand === 1){
-            double1 = true;
-            Bet1 += currentBet;
-            document.getElementById('hit_b').style.display = 'block';
-        } else if(currentSplitHand === 2){
-            double2 = true;
-            Bet2 += currentBet;
-        }
-        hit();
-        if (!isSplitMode) {
-            stand();
-        }
-});
+    document.getElementById('insurance_b').style.display = 'none';
+    maxBet -= currentBet;
+    document.getElementById('syozi').textContent = maxBet;    
+    if(currentSplitHand === 1){
+        double1 = true;
+        Bet1 += currentBet;
+        document.getElementById('hit_b').style.display = 'block';
+    } else if(currentSplitHand === 2){
+        double2 = true;
+        Bet2 += currentBet;
+    }
+    hit();
+    if (!isSplitMode) {
+        stand();
+    }
+}
 // スプリット
 const split = document.getElementById('split_b').addEventListener('click', () => {
     if(gameOver) return;
