@@ -383,6 +383,7 @@ h3 {
 /* ベットコントロールエリア */
 .bet-controls {
   display: flex;
+  flex-direction: column;
   align-items: center;
 }
 
