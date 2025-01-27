@@ -68,6 +68,7 @@ function setCustomBet() {
         currentBet = customBetValue;
         updateBetDisplay();
     } else {
+        zunda8.play();
         showErrorMessage('無効なベット額なのだ');
     }
 }
