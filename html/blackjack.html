@@ -126,7 +126,11 @@
             <div class="bet-display">
                 <label for="bet-amount">Bet</label>
                 <input type="number" id="bet-amount" value="0" readonly>
-                <input type="number" id="custom-bet" placeholder="任意のベット額"><button id="set-custom-bet">Set</button>
+                <div style="display: flex; align-items: center; gap: 5px;">
+                  <input type="number" placeholder="任意のベット額" id="betInput" style="width: 100px; padding: 5px;">
+                  <button id="setButton" style="padding: 5px 10px;">Set</button>
+                </div>
+
             </div>
             <div class="buttons">
                 <button id="max">Max</button>
