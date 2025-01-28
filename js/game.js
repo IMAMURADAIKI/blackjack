@@ -1,11 +1,11 @@
 // game.js
-import { chipValues, sound0, sound1, sound2, sound3, sound4, zunda1, zunda2, zunda3, zunda4, zunda5, zunda6, zunda7, zunda8, syoziElement, playerHandTitle, dealerCardsElement, playerCardsElement, messageElement, splitHandsContainer, splitHand1ScoreElement, splitHand2ScoreElement, playerScoreElement, dealerScoreElement, score1Element, score2Element, scoreElement, handOfCardsElement, splitHand1Element, splitHand2Element, score2ParentElement, dealButton, hitButton, doubleButton, surrenderButton, splitButton, insuranceButton, standButton, betsDisplay } from './index.js';
+import { chipValues, sound0, sound1, sound2, sound3, sound4, zunda1, zunda2, zunda3, zunda4, zunda5, sound6, sound7, zunda8, syoziElement, playerHandTitle, dealerCardsElement, playerCardsElement, messageElement, splitHandsContainer, splitHand1ScoreElement, splitHand2ScoreElement, playerScoreElement, dealerScoreElement, score1Element, score2Element, scoreElement, handOfCardsElement, splitHand1Element, splitHand2Element, score2ParentElement, dealButton, hitButton, doubleButton, surrenderButton, splitButton, insuranceButton, standButton, betsDisplay, alertMessageElement, alertOverlayElement } from './index.js'; // alertMessageElement を import
+
 // グローバル変数
 let currentBet = 0;
 let maxBet = 10000; // 初期所持金
 let minBet = 0;
 let drawBet = 0;
-
 // ゲーム用の変数 (一部グローバル変数を減らしています)
 let playerHand = [];
 let dealerHand = [];
@@ -72,7 +72,7 @@ dealButton.addEventListener('click', () => {
 });
 
 function displayAlert(message) {
-    alertMessageElement.textContent = message;
+    alertMessageElement.textContent = message; // 修正：importした alertMessageElement を使用
     alertOverlayElement.style.display = 'block';
 }
 
