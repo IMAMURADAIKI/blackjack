@@ -23,7 +23,7 @@ betAmount.addEventListener('click', () => {
 });
 
 betAmount.addEventListener('input', () => {
-    currentBet = betAmount.value;
+    currentBet = +betAmount.value;
     updateBetDisplay();
 });
 
