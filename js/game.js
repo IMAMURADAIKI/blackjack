@@ -1,5 +1,4 @@
-// game.js
-import { chipValues, sound0, sound1, sound2, sound3, sound4, zunda1, zunda2, zunda3, zunda4, zunda5, sound6, sound7, zunda8, syoziElement, playerHandTitle, dealerCardsElement, playerCardsElement, messageElement, splitHandsContainer, splitHand1ScoreElement, splitHand2ScoreElement, playerScoreElement, dealerScoreElement, score1Element, score2Element, scoreElement, handOfCardsElement, splitHand1Element, splitHand2Element, score2ParentElement, dealButton, hitButton, doubleButton, surrenderButton, splitButton, insuranceButton, standButton, betsDisplay, alertMessageElement, alertOverlayElement } from './index.js'; // alertMessageElement を import
+import { chipValues, sound0, sound1, sound2, sound3, sound4, zunda1, zunda2, zunda3, zunda4, zunda5, sound6, sound7, zunda8, syoziElement, playerHandTitle, dealerCardsElement, playerCardsElement, messageElement, splitHandsContainer, splitHand1ScoreElement, splitHand2ScoreElement, playerScoreElement, dealerScoreElement, score1Element, score2Element, scoreElement, handOfCardsElement, splitHand1Element, splitHand2Element, score2ParentElement, dealButton, hitButton, doubleButton, surrenderButton, splitButton, insuranceButton, standButton, betsDisplay, alertMessageElement, alertOverlayElement } from './index.js';
 
 // グローバル変数
 let currentBet = 0;
