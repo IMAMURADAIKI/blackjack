@@ -17,8 +17,10 @@ document.querySelectorAll('.chip').forEach(chip => {
 
 // 入力された値を設定
 betAmount.addEventListener('click', () => {
-    betAmount.value = "";
-}
+    if(this.value === '0'){
+        this.value = '';
+    }   
+});
 
 betAmount.addEventListener('input', () => {
     currentBet = betAmount.value;
