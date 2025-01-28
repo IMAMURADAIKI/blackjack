@@ -114,12 +114,12 @@ function calculateHandWinnings(fight, blackjack, bet) {
 }
 
 // calculateWinningsの簡略化
-function calculateWinnings(fight1, blackjack1, draw1, fight2, blackjack2, draw2, insurance, bet1, bet2) {
+function calculateWinnings(fight1, blackjack1, draw1, fight2, blackjack2, draw2, insurance, bet1, bet2, bust1, bust2) {
     console.log(draw1, draw2);
     let totalWinnings = 
         calculateHandWinnings(fight1, blackjack1, bet1) + 
         calculateHandWinnings(fight2, blackjack2, bet2) +
-        draw(draw1, bet1, fight1) + draw(draw2 , bet2, fight2);
+        draw(draw1, bet1, bust1) + draw(draw2 , bet2, bust2);
 
     if(!insurance){
         maxBet += totalWinnings;
@@ -135,9 +135,9 @@ function calculateWinnings(fight1, blackjack1, draw1, fight2, blackjack2, draw2,
     document.getElementById('sum').textContent = totalWinnings;
 }
 
-function draw(draw, bet, fight){
+function draw(draw, bet, bust){
     let ans = 0;
-    if(draw && fight){
+    if(draw && !bust){
         ans = bet;
     }
     return ans;
