@@ -2,7 +2,7 @@ import { chipValues, sound0, sound1, sound2, sound3, sound4, zunda1, zunda2, zun
 
 // グローバル変数
 let currentBet = 0;
-let maxBet = 10000; // 初期所持金
+export let maxBet = 10000; // 初期所持金
 let minBet = 0;
 let drawBet = 0;
 // ゲーム用の変数 (一部グローバル変数を減らしています)
