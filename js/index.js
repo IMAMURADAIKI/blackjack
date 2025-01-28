@@ -59,6 +59,7 @@ document.getElementById('deal_b').addEventListener('click', () => {
         document.getElementById('score2').parentElement.classList.add('hidden');
     
         gameOver = false;
+        surrenderflg = false;
         bust1 =false;
         bust2 =false;
         fight1 = false;
