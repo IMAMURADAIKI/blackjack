@@ -55,8 +55,8 @@ export const zunda2 = new Audio('../sounds/zunda2.wav');
 export const zunda3 = new Audio('../sounds/zunda3.wav');
 export const zunda4 = new Audio('../sounds/zunda4.wav');
 export const zunda5 = new Audio('../sounds/zunda5.wav');
-export const zunda6 = new Audio('../sounds/zunda6.wav');
-export const zunda7 = new Audio('../sounds/zunda7.wav');
+export const sound6 = new Audio('../sounds/zunda6.wav'); // sound6 を export
+export const sound7 = new Audio('../sounds/zunda7.wav'); // sound7 を export
 export const zunda8 = new Audio('../sounds/zunda8.wav');
 // チップの値を定義
 export const chipValues = {
