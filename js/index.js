@@ -1,4 +1,3 @@
-// index.js
 // DOM要素の取得 (キャッシュ)
 const betAmountElement = document.getElementById('bet-amount');
 const maxButton = document.getElementById('max');
@@ -56,7 +55,7 @@ export const zunda3 = new Audio('../sounds/zunda3.wav');
 export const zunda4 = new Audio('../sounds/zunda4.wav');
 export const zunda5 = new Audio('../sounds/zunda5.wav');
 export const sound6 = new Audio('../sounds/zunda6.wav'); // sound6 を export
-export const sound7 = new Audio('../sounds/zunda7.wav'); // sound7 を export
+export const sound7 = new Audio('../sounds/zunda7.wav');
 export const zunda8 = new Audio('../sounds/zunda8.wav');
 // チップの値を定義
 export const chipValues = {
