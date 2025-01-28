@@ -1,6 +1,5 @@
-// bet.js
 import { chipValues, syoziElement, sumElement, alertOverlayElement, alertMessageElement, sound6, sound7, sound3 } from './index.js';
-
+import { maxBet } from './game.js'; 
 // DOM要素の取得 (キャッシュ)
 const betAmountElement = document.getElementById('bet-amount');
 const maxButton = document.getElementById('max');
