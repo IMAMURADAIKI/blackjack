@@ -6,6 +6,8 @@ let card = [];
 let gameOver = false;
 let flag = false;
 let dealerHiddenCardElement = null;
+let bust1 =false;
+let bust2 =false;
 let Bet1 = 0;
 let Bet2 = 0;
 // 勝敗とブラックジャックの結果用フラグ
@@ -56,6 +58,8 @@ document.getElementById('deal_b').addEventListener('click', () => {
         document.getElementById('score2').parentElement.classList.add('hidden');
     
         gameOver = false;
+        bust1 =false;
+        bust2 =false;
         fight1 = false;
         fight2 = false;
         blackjack1 = false;
@@ -247,6 +251,12 @@ function hit() {
             document.getElementById("score2").textContent = handValue;
         }
         // バスト判定またはブラックジャック判定
+        if(handValue > 21 && currentSplitHand === 1){
+            bust1 = true;
+        }
+        if(handValue > 21 && currentSplitHand === 2){
+            bust2 = true;
+        }
         if(handValue > 21 || handValue === 21 || splitnum === 5) {
             switchToNextHand();
         } else if((currentSplitHand === 1 && double1 === true) || (currentSplitHand === 2 && double2 === true)) {
@@ -262,6 +272,7 @@ function hit() {
         updateScores();
         if (playerValue > 21) {
             // document.getElementById('message').textContent = 'Bust!';
+            bust1 = true;
             stand();
             gameOver = true;
         }
@@ -282,6 +293,7 @@ function hit() {
             updateScores();
             if (playerValue > 21) {
                 // document.getElementById('message').textContent = 'Bust!';
+                bust1 = true;
                 stand();
                 gameOver = true;
             }
@@ -302,7 +314,6 @@ function stand() {
     if(gameOver) return;
     if(isSplitMode) { // スプリットモード時の処理
         switchToNextHand();
-
     } else {
         // 通常のスタンド処理
         setTimeout(() => {    
@@ -354,7 +365,7 @@ function stand() {
 
                 draw1 = (handValue === dealerValue) ? true : false;
 
-                calculateWinnings(fight1, blackjack1, draw1, fight2, blackjack2, draw2, insuranceAvailable, Bet1, Bet2);
+                calculateWinnings(fight1, blackjack1, draw1, fight2, blackjack2, draw2, insuranceAvailable, Bet1, Bet2, bust1, bust2);
                 
                 gameOver = true;
 
@@ -597,7 +608,7 @@ function determineGameOutcome(dealerValue, hand1Value, hand2Value, blackjack1, d
     let winner = determineWinner(fight1, fight2);
     resultdisplay(winner);
 
-    calculateWinnings(fight1, blackjack1, draw1, fight2, blackjack2, draw2, insuranceAvailable, Bet1, Bet2);
+    calculateWinnings(fight1, blackjack1, draw1, fight2, blackjack2, draw2, insuranceAvailable, Bet1, Bet2, bust1, bust2);
 }
 
 function determineWinner(fight1, fight2) {
