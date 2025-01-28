@@ -119,7 +119,7 @@ function calculateWinnings(fight1, blackjack1, draw1, fight2, blackjack2, draw2,
     let totalWinnings = 
         calculateHandWinnings(fight1, blackjack1, bet1) + 
         calculateHandWinnings(fight2, blackjack2, bet2) +
-        draw(draw1, bet1) + draw(draw2 , bet2);
+        draw(draw1, bet1, fight1) + draw(draw2 , bet2, fight2);
 
     if(!insurance){
         maxBet += totalWinnings;
@@ -135,11 +135,9 @@ function calculateWinnings(fight1, blackjack1, draw1, fight2, blackjack2, draw2,
     document.getElementById('sum').textContent = totalWinnings;
 }
 
-function draw(draw, bet){
+function draw(draw, bet, fight){
     let ans = 0;
-    //let ch = draw;
-    //console.log(ch, bet);
-    if(draw === true){
+    if(draw && fight){
         ans = bet;
     }
     return ans;
