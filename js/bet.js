@@ -1,5 +1,7 @@
+// bet.js
 import { chipValues, syoziElement, sumElement, alertOverlayElement, alertMessageElement, sound6, sound7, sound3 } from './index.js';
-import { maxBet, currentBet } from './game.js'; 
+import { maxBet, currentBet } from './game.js'; // game.js から maxBet, currentBet を import
+
 // DOM要素の取得 (キャッシュ)
 const betAmountElement = document.getElementById('bet-amount');
 const maxButton = document.getElementById('max');
@@ -68,7 +70,7 @@ subtractButton.addEventListener('click', () => {
 // ベット額を加算する関数
 function addBet(amount) {
     if (currentBet + amount <= maxBet) {
-        currentBet += amount;
+        currentBet += amount; // const を削除
         updateBetDisplay();
     } else if (maxBet === 0) {
       sound6.play();
