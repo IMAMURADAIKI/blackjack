@@ -371,14 +371,15 @@ h3 {
   cursor: pointer;
 }
 
-.chip.green { background-color: green; }
+.chip.red { background-color: red; }
 .chip.yellow { background-color: yellow; color: black; }
 .chip.blue { background-color: blue; }
-.chip.black { background-color: black; }
-.chip.red { background-color: red; }
-.chip.purple { background-color: purple; }
-.chip.orange { background-color: orange; }
 .chip.pink { background-color: pink; }
+.chip.orange { background-color: orange; }
+.chip.purple { background-color: purple; }
+.chip.mediumturquoise { background-color: mediumturquoise; }
+.chip.yellowgreen { background-color: yellowgreen; }
+.chip.black { background-color: black; }
 
 /* ベットコントロールエリア */
 .bet-controls {
