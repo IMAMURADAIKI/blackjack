@@ -5,6 +5,7 @@ let deck = [];
 let card = [];
 let gameOver = false;
 let flag = false;
+let surrenderflg = false;
 let dealerHiddenCardElement = null;
 let bust1 =false;
 let bust2 =false;
@@ -344,6 +345,9 @@ function stand() {
                 // 追加のカードを引くたびにスコアを更新
                 document.getElementById('dealer-score').textContent = dealerValue;
             }
+
+            if(surrenderflg) return;
+            
             let time = dealerHand.length >= 3 ? 1500 : 1000;
 
             setTimeout(() => {
@@ -581,6 +585,8 @@ const insurance = document.getElementById('insurance_b').addEventListener('click
 // サレンダー
 const surrender = document.getElementById('surrender_b').addEventListener('click', () => {
     if(!gameOver) {
+        surrenderflg = true;
+        stand();
         gameOver = true;
         reset();
         surrender_bet();
