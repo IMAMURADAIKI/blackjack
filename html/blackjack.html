@@ -113,24 +113,20 @@
     
     <div class="bet-area" id="bets">
         <div class="chips">
-            <div class="chip green">1</div>
+            <div class="chip red">1</div>
             <div class="chip yellow">10</div>
             <div class="chip blue">50</div>
-            <div class="chip black">100</div>
-            <div class="chip red">500</div>
+            <div class="chip pink">100</div>
+            <div class="chip orange">500</div>
             <div class="chip purple">1K</div>
-            <div class="chip orange">5K</div>
-            <div class="chip pink">10K</div>
+            <div class="chip mediumturquoise">5K</div>
+            <div class="chip yellowgreen">10K</div>
+            <div class="chip black">100K</div>
         </div>
         <div class="bet-controls">
             <div class="bet-display">
                 <label for="bet-amount">Bet</label>
-                <input type="number" id="bet-amount" value="0" readonly>
-                <div style="display: flex; align-items: center; gap: 5px;">
-                  <input type="number" placeholder="任意の額" id="betInput" style="width: 100px; padding: 5px;">
-                  <button id="setButton" style="padding: 5px 10px;">Set</button>
-                </div>
-
+                <input type="number" id="bet-amount" placeholder="入力" value="0" min="0">
             </div>
             <div class="buttons">
                 <button id="max">Max</button>
@@ -159,21 +155,16 @@
         const zunda8 = new Audio('../sounds/zunda8.wav');
         // チップの値を定義
         const chipValues = {
-            'green': 1,
+            'red': 1,
             'yellow': 10,
             'blue': 50,
-            'black': 100,
-            'red': 500,
+            'pink': 100,
+            'orange': 500,
             'purple': 1000,
-            'orange': 5000,
-            'pink': 10000
+            'mediumturquoise': 5000,
+            'yellowgreen': 10000,
+            'black': 100000
         };
-        
-        // ベットステップを定義
-        let betSteps = [
-            { max: Infinity, step: 1 }
-        ];
-        
         // グローバル変数
         let currentBet = 0;
         let maxBet = 10000; // 初期所持金
