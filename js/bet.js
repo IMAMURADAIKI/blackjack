@@ -5,116 +5,72 @@ let halfButton = document.getElementById('half');
 let minButton = document.getElementById('min');
 let addButton = document.getElementById('add');
 let subtractButton = document.getElementById('subtract');
-let customBetButton = document.getElementById('set-custom-bet');
-
 // 初期表示設定
 document.getElementById('syozi').textContent = maxBet;
 
-// イベントリスナーの設定
-setupEventListeners();
-
-// イベントリスナーをセットアップするメソッド
-function setupEventListeners() {
-    const actions = {
-        'max': setMaxBet,
-        'half': setHalfBet,
-        'min': setMinBet,
-        'add': incrementBet,
-        'subtract': decrementBet,
-        'set-custom-bet': setCustomBet
-    };
-
-    Object.keys(actions).forEach(id => {
-        document.getElementById(id).addEventListener('click', actions[id]);
+document.querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+        const color = chip.classList[1];
+        addBet(chipValues[color]);
     });
+});
 
-    document.querySelectorAll('.chip').forEach(chip => {
-        chip.addEventListener('click', () => {
-            const color = chip.classList[1];
-            addBet(chipValues[color]);
-        });
-    });
-}
-
-// ベットステップを取得する関数
-function getBetStep(currentMaxBet) {
-    return betSteps.find(step => currentMaxBet <= step.max).step;
-}
+// 入力された値を設定
+betAmount.addEventListener('input', () => {
+    currentBet = betAmount.value;
+    updateBetDisplay();
+});
 
 // 最大ベットに設定
-function setMaxBet() {
+maxButton.addEventListener('click', () => {
     currentBet = maxBet;
     updateBetDisplay();
-    document.getElementById('custom-bet').value = ''; // カスタムベット入力をクリア
-}
+});
 
-// Half Betを設定する関数
-function setHalfBet() {
+// 半分ベットに設定
+halfButton.addEventListener('click', () => {
     currentBet = Math.floor(maxBet / 2);
     updateBetDisplay();
-    document.getElementById('custom-bet').value = ''; // カスタムベット入力をクリア
-}
+});
 
 // 最小ベットに設定
-function setMinBet() {
+minButton.addEventListener('click', () => {
     currentBet = minBet;
     updateBetDisplay();
-    document.getElementById('custom-bet').value = ''; // カスタムベット入力をクリア
-}
+});
 
-// カスタムベットを設定する関数
-function setCustomBet() {
-    const customBetInput = document.getElementById('custom-bet');
-    const customBetValue = parseInt(customBetInput.value);
-
-    if (!isNaN(customBetValue) && customBetValue >= minBet && customBetValue <= maxBet) {
-        currentBet = customBetValue;
+// ベットを1増やす
+addButton.addEventListener('click', () => {
+    if (currentBet < maxBet) {
+        currentBet += 1;
         updateBetDisplay();
-    } else {
-        zunda8.play();
-        showErrorMessage('無効なベット額なのだ');
     }
-}
+});
 
-// ベットを1増やす（ステップに応じて）
-function incrementBet() {
-    const step = getBetStep(maxBet);
-    if (currentBet + step <= maxBet) {
-        currentBet += step;
+// ベットを1減らす
+subtractButton.addEventListener('click', () => {
+    if (currentBet > minBet) {
+        currentBet -= 1;
         updateBetDisplay();
-        document.getElementById('custom-bet').value = ''; // カスタムベット入力をクリア
     }
-}
-
-// ベットを1減らす（ステップに応じて）
-function decrementBet() {
-    const step = getBetStep(maxBet);
-    if (currentBet - step >= minBet) {
-        currentBet -= step;
-        updateBetDisplay();
-        document.getElementById('custom-bet').value = ''; // カスタムベット入力をクリア
-    }
-}
+});
 
 // ベット額を増やす
 function addBet(amount) {
-    const step = getBetStep(maxBet);
-    const adjustedAmount = Math.floor(amount / step) * step;
-
-    if (currentBet + adjustedAmount <= maxBet) {
-        currentBet += adjustedAmount;
+    if (currentBet + amount <= maxBet) {
+        currentBet += amount;
         updateBetDisplay();
-        document.getElementById('custom-bet').value = ''; // カスタムベット入力をクリア
+    } else if(maxBet === 0) {
+        zunda6.play();
+        showErrorMessage('お金がないからかけることができないのだ');
+        document.getElementById('alert-overlay').style.display = 'block';
     } else {
-        if(maxBet === 0){
-            zunda6.play();
-            showErrorMessage('お金がないから、かけることができないのだ');
-        } else {
-            zunda7.play();
-            showErrorMessage('これ以上かけることができないのだ');
-        }
+        zunda7.play();
+        showErrorMessage('これ以上かけることができないのだ');
+        document.getElementById('alert-overlay').style.display = 'block';
     }
 }
+
 
 // ベット額を画面に表示
 function updateBetDisplay() {
@@ -122,7 +78,7 @@ function updateBetDisplay() {
         betAmount.value = 0;
     } else {
         betAmount.value = currentBet;
-        let syozibet = maxBet - currentBet;
+        let syozibet = maxBet - betAmount.value;
         if(syozibet >= 0){        
             document.getElementById('syozi').textContent = syozibet;    
         } else {
