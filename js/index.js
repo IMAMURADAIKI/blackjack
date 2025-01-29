@@ -416,7 +416,7 @@ function handleNormalStand() {
             if (handValue > BLACKJACK_VALUE) fight1 = false;
             const win = determineWinner(handValue, dealerValue, fight1);
 
-            bustHands(hand1Value, 1);
+            bustHands(handValue, 1);
             draw1 = (handValue === dealerValue) ? true : false;
             resultdisplay(win);
             calculateWinnings(fight1, blackjack1, draw1, fight2, blackjack2, draw2, insuranceAvailable, Bet1, Bet2, bust1, bust2);
