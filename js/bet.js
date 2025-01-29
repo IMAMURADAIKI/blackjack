@@ -171,12 +171,3 @@ function calculateInsuranceBet() {
 function surrenderBet() {
     maxBet += Math.floor(currentBet / 2);
 }
-// スプリット時のベット額を返す
-function getSplitBet() {
-  return currentBet;
-}
-// スプリット時の所持金を減らす
-function decreaseMaxBet(bet){
-    maxBet -= bet;
-    syoziElement.textContent = maxBet;
-}
