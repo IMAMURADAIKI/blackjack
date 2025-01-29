@@ -1,17 +1,38 @@
-// ゲーム用の変数
+// 定数
+const MAX_PLAYER_CARDS = 5;
+const DEALER_STAND_VALUE = 17;
+const BLACKJACK_VALUE = 21;
+const CARD_VALUE_ACE = 1;
+const CARD_VALUE_FACE = 10;
+const CARD_VALUE_ACE_ALT = 11;
+const TIME_BETWEEN_ACTIONS = 1500;
+const TIME_BETWEEN_DRAW_CARD = 1000;
+
+// 音源
+const sound0 = new Audio('../sounds/maou_bgm_acoustic11.mp3');
+const sound1 = new Audio('../sounds/card.mp3');
+const sound2 = new Audio('../sounds/put.mp3');
+const sound3 = new Audio('../sounds/result.mp3');
+const sound4 = new Audio('../sounds/shuffle.mp3');
+const zunda1 = new Audio('../sounds/zunda1.wav');
+const zunda2 = new Audio('../sounds/zunda2.wav');
+const zunda3 = new Audio('../sounds/zunda3.wav');
+const zunda4 = new Audio('../sounds/zunda4.wav');
+const zunda5 = new Audio('../sounds/zunda5.wav');
+const zunda6 = new Audio('../sounds/zunda6.wav');
+const zunda7 = new Audio('../sounds/zunda7.wav');
+const zunda8 = new Audio('../sounds/zunda8.wav');
+
+// ゲームの状態変数
 let playerHand = [];
 let dealerHand = [];
 let deck = [];
-let card = [];
 let gameOver = false;
-let flag = false;
+let gameStarted = false;
 let surrenderflg = false;
 let dealerHiddenCardElement = null;
-let bust1 =false;
-let bust2 =false;
 let Bet1 = 0;
 let Bet2 = 0;
-// 勝敗とブラックジャックの結果用フラグ
 let fight1 = false;
 let blackjack1 = false;
 let double1 = false;
@@ -20,541 +41,552 @@ let fight2 = false;
 let blackjack2 = false;
 let double2 = false;
 let draw2 = false;
-// スプリット用フラグ
 let splitHand1 = [];
 let splitHand2 = [];
-let splitnum = 2;
-let currentSplitHand = 1; // 現在のプレイハンド
-let isSplitMode = false; // スプリット状態か？
-// インシュランス用フラグ
+let splitNum = 2;
+let currentSplitHand = 1;
+let isSplitMode = false;
 let insuranceAvailable = false;
 
+// 初期設定
 sound0.pause();
 sound0.currentTime = 0;
 sound0.loop = true;
 sound0.volume = 0.05;
-
 sound0.play();
-// スタート
-document.getElementById('deal_b').addEventListener('click', () => {
-    if(flag) return;
-    if(currentBet != 0 && maxBet != 0) {
-        maxBet -= currentBet;
-        Bet1 = currentBet;
-        document.querySelector('#player-hand h2').style.display = 'block';
-        document.getElementById('dealer-cards').innerHTML = '';
-        document.getElementById('player-cards').innerHTML = '';
-        document.getElementById('message').textContent = '';
-        document.getElementById('hit_b').style.display = 'block';
-        if(maxBet >= currentBet){ document.getElementById('double_b').style.display = 'block';}
-        document.getElementById('surrender_b').style.display = 'block';
-        document.getElementById('split_b').style.display = 'none';
-        document.getElementById('insurance_b').style.display = 'none';
-        document.getElementById('deal_b').style.display = 'none';
-        document.getElementById('stand_b').style.display = 'block';
-        document.getElementById('bets').style.display = 'none';
-        // UIをリセット
-        document.getElementById('split-hands-container').style.display = 'none';
-        document.getElementById('player-cards').style.display = 'block';
-        document.getElementById('score2').parentElement.classList.add('hidden');
-    
-        gameOver = false;
-        surrenderflg = false;
-        bust1 =false;
-        bust2 =false;
-        fight1 = false;
-        fight2 = false;
-        blackjack1 = false;
-        blackjack2 = false;
-        double1 = false;
-        double2 = false;
-        draw1 = false;
-        draw2 = false;
-        BetSum = 0;
-        Bet1 = currentBet;
-        Bet2 = 0;
-        flag = true;
-        isSplitMode = false;
-        splitnum = 2;
-        insuranceAvailable = false;
-        Sum = 0;
-        winBet = 0;
 
-        sound1.pause();
-        sound1.currentTime = 0;
-        sound2.pause();
-        sound2.currentTime = 0;
-        sound3.pause();
-        sound3.currentTime = 0;
-        sound4.pause();
-        sound4.currentTime = 0;
-        zunda1.pause();
-        zunda1.currentTime = 0;
-        zunda2.pause();
-        zunda2.currentTime = 0;
-        zunda3.pause();
-        zunda3.currentTime = 0;
-        zunda4.pause();
-        zunda4.currentTime = 0;
-        zunda5.pause();
-        zunda5.currentTime = 0;
-        zunda6.pause();
-        zunda6.currentTime = 0;
-        zunda7.pause();
-        zunda7.currentTime = 0;
-        zunda8.pause();
-        zunda8.currentTime = 0;
-        
-        createDeck();
-        sound4.play();
-        dealInitialCards();
-        if((playerHand[0].value === playerHand[1].value) || (['10', '11', '12', '13'].includes(playerHand[0].value) && ['10', '11', '12', '13'].includes(playerHand[1].value))){
-            if(maxBet >= currentBet){document.getElementById('split_b').style.display = 'block';}
-        }    
-    } else if(maxBet === 0){
-        zunda2.play();
-        document.getElementById('alert-message').textContent = '一文無しはさっさと帰るのだ！！';
-        document.getElementById('alert-overlay').style.display = 'block';
-    } else {
-        zunda1.play();
-        document.getElementById('alert-message').textContent = 'さっさと、かけ金をかけるのだ！！';
-        document.getElementById('alert-overlay').style.display = 'block';
+// メニュー関連
+document.addEventListener('DOMContentLoaded', () => {
+    const gameMenuBtn = document.getElementById('game-menu-btn');
+    const menuOverlay = document.getElementById('menu-overlay');
+    const resumeBtn = document.getElementById('resume-btn');
+    const rulesBtn = document.getElementById('rules-btn');
+    const titleBtn = document.getElementById('title-btn');
+    const rulesOverlay = document.getElementById('rules-overlay');
+    const closeRulesBtn = document.getElementById('close-rules-btn');
+    const resultOverlay = document.getElementById('result-overlay');
+    const resultContent = document.getElementById('result-content');
+    const alertOverlay = document.getElementById('alert-overlay');
+    
+    // メニュー開閉
+    gameMenuBtn.addEventListener('click', () => {
+        menuOverlay.style.display = 'flex';
+        pauseGame();
+    });
+    resumeBtn.addEventListener('click', () => {
+        menuOverlay.style.display = 'none';
+        resumeGame();
+    });
+    // ルール説明開閉
+    rulesBtn.addEventListener('click', () => {
+        rulesOverlay.style.display = 'flex';
+    });
+    closeRulesBtn.addEventListener('click', () => {
+        rulesOverlay.style.display = 'none';
+    });
+    // タイトル画面へ
+    titleBtn.addEventListener('click', () => {
+        window.location.href = '../html/home.html';
+    });
+    // モーダルクリックで閉じる
+    resultOverlay.addEventListener('click', (event) => {
+      if (event.target === resultOverlay) {
+        resultOverlay.style.display = 'none';
+      }
+    });
+    resultContent.addEventListener('click', (event) => {
+      if (event.target === resultContent) {
+        resultOverlay.style.display = 'none';
+      }
+    });
+    alertOverlay.addEventListener('click', (event) => {
+      if (event.target === alertOverlay) {
+        alertOverlay.style.display = 'none';
+      }
+    });
+});
+
+// ゲームボタンの有効/無効化
+function pauseGame() {
+    const gameButtons = document.querySelectorAll('.game_buttons button');
+    gameButtons.forEach(button => button.disabled = true);
+}
+function resumeGame() {
+    const gameButtons = document.querySelectorAll('.game_buttons button');
+    gameButtons.forEach(button => button.disabled = false);
+}
+
+// ゲーム開始
+document.getElementById('deal_b').addEventListener('click', () => {
+    if (gameStarted) return;
+    if (currentBet === 0 || maxBet === 0) {
+        if (maxBet === 0) {
+            zunda2.play();
+            showAlertMessage('一文無しはさっさと帰るのだ！！');
+        } else {
+            zunda1.play();
+            showAlertMessage('さっさと、かけ金をかけるのだ！！');
+        }
+        return;
+    }
+
+    startGame();
+    setupGameUI();
+    resetGameVariables();
+    createDeckAndDealCards();
+
+    if (isBlackjack(playerHand)) {
+        handlePlayerBlackjack();
+    } else if(isSplittable(playerHand) && maxBet >= currentBet){
+            document.getElementById('split_b').style.display = 'block';
     }
 });
-// デッキ作成＆カード配布etc.
+
+function startGame() {
+    maxBet -= currentBet;
+    Bet1 = currentBet;
+    gameStarted = true;
+}
+function setupGameUI() {
+    document.querySelector('#player-hand h2').style.display = 'block';
+    document.getElementById('dealer-cards').innerHTML = '';
+    document.getElementById('player-cards').innerHTML = '';
+    document.getElementById('message').textContent = '';
+    document.getElementById('hit_b').style.display = 'block';
+    if(maxBet >= currentBet){ document.getElementById('double_b').style.display = 'block';}
+    document.getElementById('surrender_b').style.display = 'block';
+    document.getElementById('split_b').style.display = 'none';
+    document.getElementById('insurance_b').style.display = 'none';
+    document.getElementById('deal_b').style.display = 'none';
+    document.getElementById('stand_b').style.display = 'block';
+    document.getElementById('bets').style.display = 'none';
+    document.getElementById('split-hands-container').style.display = 'none';
+    document.getElementById('player-cards').style.display = 'block';
+    document.getElementById('score2').parentElement.classList.add('hidden');
+}
+function resetGameVariables() {
+    gameOver = false;
+    surrenderflg = false;
+    fight1 = false;
+    fight2 = false;
+    blackjack1 = false;
+    blackjack2 = false;
+    double1 = false;
+    double2 = false;
+    draw1 = false;
+    draw2 = false;
+    Bet1 = currentBet;
+    Bet2 = 0;
+    isSplitMode = false;
+    splitNum = 2;
+    insuranceAvailable = false;
+    BetSum = 0;
+}
+function createDeckAndDealCards() {
+    stopSounds();
+    createDeck();
+    sound4.play();
+    dealInitialCards();
+}
+
+// デッキ作成
 function createDeck() {
     const suits = ['heart', 'diamond', 'club', 'spade'];
     const values = ['1','2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13'];
-            
-    deck = suits.flatMap(suit => 
-        values.map(value => ({ suit, value }))
-    );
-            
-    // デッキをシャッフル
-    for(let i = deck.length - 1; i > 0; i--) {
+    deck = suits.flatMap(suit => values.map(value => ({ suit, value })));
+
+    for (let i = deck.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [deck[i], deck[j]] = [deck[j], deck[i]];
     }
 }
 
+// カードを引く
 function drawCard() {
     return deck.pop();
 }
-
+// カードの値を計算
 function getCardValue(card) {
-    return card.value === '1' ? 11 : ['11', '12', '13'].includes(card.value) ? 10 : parseInt(card.value);
+    return card.value === '1' ? CARD_VALUE_ACE_ALT: (['11', '12', '13'].includes(card.value) ? CARD_VALUE_FACE : parseInt(card.value));
 }
 
+// 手札の合計値を計算
 function calculateHandValue(hand) {
     let total = 0;
     let aces = hand.filter(card => card.value === '1').length;
     total = hand.reduce((sum, card) => sum + getCardValue(card), 0);
-    // エースを1として数えるかの調整
-    while (total > 21 && aces > 0) {
+    while (total > BLACKJACK_VALUE && aces > 0) {
         total -= 10;
-        aces -= 1;
+        aces--;
     }
     return total;
 }
-
+// カードをUIに追加
 function addCardToHand(card, hand, index = 0) {
-    const cardImage = document.createElement('img');
-    cardImage.src = `../cards/${card.value}_${card.suit}.png`;
-    cardImage.classList.add('card-image');
-    cardImage.style.animationDelay = `${index * 0.2}s`;
-    cardImage.classList.add('deal-animation');
-    cardImage.addEventListener('animationend', () => {
-        cardImage.classList.remove('deal-animation');
-    });
+  const cardImage = createCardImage(card, index);
+  const targetHand = document.getElementById(`${hand}-cards`);
 
-    const targetHand = document.getElementById(`${hand}-cards`);
-    if(targetHand) {
-        targetHand.appendChild(cardImage);
-    } else {
-        console.error(`Invalid hand specified: ${hand}. Expected 'player' or 'dealer'.`);
-    }
-
+  if (targetHand) {
+      targetHand.appendChild(cardImage);
+  } else {
+      console.error(`Invalid hand specified: ${hand}. Expected 'player' or 'dealer'.`);
+  }
+}
+function createCardImage(card, index) {
+  const cardImage = document.createElement('img');
+  cardImage.src = `../cards/${card.value}_${card.suit}.png`;
+  cardImage.classList.add('card-image', 'deal-animation');
+  cardImage.style.animationDelay = `${index * 0.2}s`;
+  cardImage.addEventListener('animationend', () => {
+      cardImage.classList.remove('deal-animation');
+  });
+  return cardImage;
 }
 
+// スコアを更新
 function updateScores() {
-    // スプリットモード時のスコア更新
     if(isSplitMode) {
-        document.getElementById('split-hand-1-score').textContent = 
-            `Hand 1: ${calculateHandValue(splitHand1)}`;
-        document.getElementById('split-hand-2-score').textContent = 
-            `Hand 2: ${calculateHandValue(splitHand2)}`;
+      document.getElementById('split-hand-1-score').textContent = `Hand 1: ${calculateHandValue(splitHand1)}`;
+      document.getElementById('split-hand-2-score').textContent = `Hand 2: ${calculateHandValue(splitHand2)}`;
     } else {
-        document.getElementById('player-score').textContent = calculateHandValue(playerHand);
-        // ゲーム開始時は空白のまま
+      document.getElementById('player-score').textContent = calculateHandValue(playerHand);
         if (!gameOver) {
             document.getElementById('dealer-score').textContent = '';
         }
     }
 }
-
+// カードを配る
 function dealInitialCards() {
-    playerHand = [drawCard(),drawCard()];// drawCard(),drawCard()
-    dealerHand = [drawCard(),drawCard()];// { suit: 'heart', value: '10' },{ suit: 'heart', value: '10' }
-    playerHand.forEach((card, index) => {
-        addCardToHand(card, 'player', index);
-    });
-    addCardToHand(dealerHand[0], 'dealer', 0);
-    dealerHiddenCardElement = document.createElement('img');
-    dealerHiddenCardElement.src = '../cards/back.png';
-    dealerHiddenCardElement.classList.add('card-image', 'hidden-card');
-    document.getElementById('dealer-cards').appendChild(dealerHiddenCardElement);
+    playerHand = [drawCard(), drawCard()];
+    dealerHand = [drawCard(), drawCard()];
+    playerHand.forEach((card, index) => addCardToHand(card, 'player', index));
+    addDealerCard();
     updateScores();
-    if(dealerHand[0].value === '1' && Math.floor(currentBet/2) <= maxBet) {
+    if (dealerHand[0].value === '1' && Math.floor(currentBet / 2) <= maxBet) {
         document.getElementById('insurance_b').style.display = 'block';
     }
-    if (calculateHandValue(playerHand) === 21) {
-        document.getElementById('message').textContent = 'Blackjack! Checking Dealer...';
-        document.getElementById('hit_b').style.display = 'none';
-        document.getElementById('double_b').style.display = 'none';
-        document.getElementById('stand_b').style.display = 'none';
-        document.getElementById('insurance_b').style.display = 'none';
-        document.getElementById('surrender_b').style.display = 'none';
-        blackjack1 = true;
-        stand();
-    }
 }
-// ボタンが押された時の処理
+function addDealerCard(){
+    addCardToHand(dealerHand[0], 'dealer', 0);
+    dealerHiddenCardElement = createHiddenCardImage();
+    document.getElementById('dealer-cards').appendChild(dealerHiddenCardElement);
+}
+
+function createHiddenCardImage() {
+    const cardImage = document.createElement('img');
+    cardImage.src = '../cards/back.png';
+    cardImage.classList.add('card-image', 'hidden-card');
+    return cardImage;
+}
+// ブラックジャック判定
+function isBlackjack(hand) {
+    return calculateHandValue(hand) === BLACKJACK_VALUE;
+}
+// ブラックジャック時の処理
+function handlePlayerBlackjack() {
+    document.getElementById('message').textContent = 'Blackjack! Checking Dealer...';
+    document.getElementById('hit_b').style.display = 'none';
+    document.getElementById('double_b').style.display = 'none';
+    document.getElementById('stand_b').style.display = 'none';
+    document.getElementById('insurance_b').style.display = 'none';
+    document.getElementById('surrender_b').style.display = 'none';
+    blackjack1 = true;
+    stand();
+}
 // ヒット
 function hit() {
-    if(gameOver) return;
+    if (gameOver) return;
+    disableActionButtons();
+    if (isSplitMode) {
+        handleSplitHit();
+    } else if (double1) {
+        handleDoubleHit();
+    } else {
+        handleNormalHit();
+    }
+}
+
+// ボタン制御
+function disableActionButtons() {
     document.getElementById('double_b').style.display = 'none';
     document.getElementById('split_b').style.display = 'none';
     document.getElementById('insurance_b').style.display = 'none';
     document.getElementById('surrender_b').style.display = 'none';
-    // スプリットモード時のヒット処理
-    if(isSplitMode) {
+}
+// スプリット時のヒット処理
+function handleSplitHit() {
         document.getElementById('hit_b').style.display = 'block';
         const currentHand = currentSplitHand === 1 ? splitHand1 : splitHand2;
         const targetCardsElement = currentSplitHand === 1 ? document.getElementById('split-hand-1-cards') : document.getElementById('split-hand-2-cards');
-        if(splitnum < 5) {
-            sound1.play();
-            card = drawCard(); // カードをドロー
-            currentHand.push(card);
-            splitnum++;
-        }
-        // カードを表示
-        const cardImage = document.createElement('img');
-        cardImage.src = `../cards/${card.value}_${card.suit}.png`;
-        cardImage.classList.add('card-image');
+    if(splitNum < MAX_PLAYER_CARDS){
+        sound1.play();
+        const card = drawCard();
+        currentHand.push(card);
+        splitNum++;
+        const cardImage = createCardImage(card);
         targetCardsElement.appendChild(cardImage);
-        // スコアを更新
-        document.getElementById(`split-hand-${currentSplitHand}-score`).textContent = `Hand ${currentSplitHand}: ${calculateHandValue(currentHand)}`;
-        // スコア計算と変数への代入
-        const handValue = calculateHandValue(currentHand);
-        if(currentSplitHand === 1){
-            document.getElementById("score1").textContent = handValue;
-        } else if(currentSplitHand === 2){
-            document.getElementById("score2").style.display = 'block';
-            document.getElementById("score2").textContent = handValue;
-        }
-        // バスト判定またはブラックジャック判定
-        if(handValue > 21 && currentSplitHand === 1){
-            bust1 = true;
-        }
-        if(handValue > 21 && currentSplitHand === 2){
-            bust2 = true;
-        }
-        if(handValue > 21 || handValue === 21 || splitnum === 5) {
+        updateSplitScore();
+        checkSplitHandStatus(currentHand);
+    }
+}
+function updateSplitScore() {
+    const handValue = calculateHandValue(currentSplitHand === 1 ? splitHand1 : splitHand2);
+    document.getElementById(`split-hand-${currentSplitHand}-score`).textContent = `Hand ${currentSplitHand}: ${handValue}`;
+     if(currentSplitHand === 1){
+        document.getElementById("score1").textContent = handValue;
+    } else if(currentSplitHand === 2){
+        document.getElementById("score2").style.display = 'block';
+        document.getElementById("score2").textContent = handValue;
+    }
+}
+function checkSplitHandStatus(hand) {
+    const handValue = calculateHandValue(hand);
+    if (handValue > BLACKJACK_VALUE || handValue === BLACKJACK_VALUE || splitNum === MAX_PLAYER_CARDS || (currentSplitHand === 1 && double1) || (currentSplitHand === 2 && double2)){
             switchToNextHand();
-        } else if((currentSplitHand === 1 && double1 === true) || (currentSplitHand === 2 && double2 === true)) {
-            switchToNextHand();
+    }
+}
+
+// 通常ダブル時のヒット処理
+function handleDoubleHit() {
+    sound1.play();
+        const card = drawCard();
+        playerHand.push(card);
+        addCardToHand(card, 'player', playerHand.length - 1);
+        const playerValue = calculateHandValue(playerHand);
+        updateScores();
+        if (playerValue > BLACKJACK_VALUE) {
+            stand();
+            gameOver = true;
         }
-    }else if(double1){
-        // 通常ダブル時のヒット処理
+        if (playerValue === BLACKJACK_VALUE) {
+            document.getElementById('hit_b').style.display = 'none';
+            blackjack1 = true;
+            stand();
+        }
+}
+
+// 通常のヒット処理
+function handleNormalHit() {
+    if (playerHand.length < MAX_PLAYER_CARDS) {
         sound1.play();
         const card = drawCard();
         playerHand.push(card);
         addCardToHand(card, 'player', playerHand.length - 1);
         const playerValue = calculateHandValue(playerHand);
         updateScores();
-        if (playerValue > 21) {
-            // document.getElementById('message').textContent = 'Bust!';
-            bust1 = true;
+        if (playerValue > BLACKJACK_VALUE) {
             stand();
             gameOver = true;
         }
-        if (calculateHandValue(playerHand) === 21) {
-            // document.getElementById('message').textContent = 'Blackjack! Checking Dealer...';
+        if (playerValue === BLACKJACK_VALUE) {
             document.getElementById('hit_b').style.display = 'none';
             blackjack1 = true;
             stand();
-        }    
-    }else {
-        // 通常のヒット処理
-        if(playerHand.length < 5) {
-            sound1.play();
-            const card = drawCard();
-            playerHand.push(card);
-            addCardToHand(card, 'player', playerHand.length - 1);
-            const playerValue = calculateHandValue(playerHand);
-            updateScores();
-            if (playerValue > 21) {
-                // document.getElementById('message').textContent = 'Bust!';
-                bust1 = true;
-                stand();
-                gameOver = true;
-            }
-            if (calculateHandValue(playerHand) === 21) {
-                // document.getElementById('message').textContent = 'Blackjack! Checking Dealer...';
-                document.getElementById('hit_b').style.display = 'none';
-                blackjack1 = true;
-                stand();
-            }    
         }
-        if(playerHand.length === 5) {
-            stand();
-        }
+    }
+    if (playerHand.length === MAX_PLAYER_CARDS) {
+        stand();
     }
 }
 // スタンド
 function stand() {
-    if(gameOver) return;
-    if(isSplitMode) { // スプリットモード時の処理
-        switchToNextHand();
+    if (gameOver) return;
+    if (isSplitMode) {
+      switchToNextHand();
     } else {
-        // 通常のスタンド処理
-        setTimeout(() => {    
-            // 最初の2枚目のカードをめくる
-            sound2.play();
-            document.getElementById('dealer-cards').removeChild(dealerHiddenCardElement);
-            addCardToHand(dealerHand[1], 'dealer', 1);
-            // この時点でディーラーの点数を更新
-            document.getElementById('dealer-score').textContent = calculateHandValue(dealerHand);
-            let dealerValue = calculateHandValue(dealerHand); 
-            if(dealerValue === 21){
-                zunda3.play();
-            }
-            document.getElementById("score").textContent = dealerValue;
-            // ディーラーのカードを最大5枚まで制限
-            while (dealerValue < 17 && dealerHand.length < 5 && !insuranceAvailable) {
-                sound1.play();
-                const card = drawCard();
-                dealerHand.push(card);
-                addCardToHand(card, 'dealer', dealerHand.length - 1);
-                
-                dealerValue = calculateHandValue(dealerHand);
-                if(dealerValue === 21){
-                    zunda3.play();
-                }    
-                document.getElementById("score").textContent = dealerValue;
-
-                // 追加のカードを引くたびにスコアを更新
-                document.getElementById('dealer-score').textContent = dealerValue;
-            }
-
-            if(surrenderflg) return;
-            
-            let time = dealerHand.length >= 3 ? 1500 : 1000;
-
-            setTimeout(() => {
-                if(dealerValue != 21){
-                    insuranceAvailable = false;
-                }
-
-                const handValue = calculateHandValue(playerHand);
-                fight1 = determineFight(dealerValue, handValue);
-                
-                // ハンドが21を超えた場合は敗北
-                if (handValue > 21) {
-                    fight1 = false;
-                }
-                
-                // 勝者の判定
-                let win = (handValue === dealerValue) && (handValue <= 21) ? 'draw' : handValue > 21 ? 'Dealer win' : fight1 ? 'Player win' : 'Dealer win';
-                resultdisplay(win);
-
-                draw1 = (handValue === dealerValue) ? true : false;
-
-                calculateWinnings(fight1, blackjack1, draw1, fight2, blackjack2, draw2, insuranceAvailable, Bet1, Bet2, bust1, bust2);
-                
-                gameOver = true;
-
-                if(fight1){
-                    zunda4.play();
-                } else if(!draw1){
-                    zunda5.play();
-                }
-                document.getElementById('result-overlay').style.display = 'block';
-                document.getElementById("score1").textContent = handValue; 
-            }, time);
-
-            reset();
-            timeset();        
-        }, 1000);
+      handleNormalStand();
     }
+}
+function handleNormalStand() {
+    setTimeout(() => {
+        sound2.play();
+        revealDealerHiddenCard();
+        updateDealerScore();
+        dealersTurn();
+        
+        if (surrenderflg) return;
+        const time = dealerHand.length >= 3 ? TIME_BETWEEN_ACTIONS : TIME_BETWEEN_DRAW_CARD;
+            
+        setTimeout(() => {
+            const handValue = calculateHandValue(playerHand);
+            const dealerValue = calculateHandValue(dealerHand);
+            fight1 = determineFight(dealerValue, handValue);
+            if (handValue > BLACKJACK_VALUE) fight1 = false;
+            const win = determineWinner(handValue, dealerValue, fight1);
+            
+            draw1 = (handValue === dealerValue) ? true : false;
+            resultdisplay(win);
+            calculateWinnings(fight1, blackjack1, draw1, fight2, blackjack2, draw2, insuranceAvailable, Bet1, Bet2);
+            gameOver = true;
+
+            showGameResult();
+            reset();
+            timeset();
+            }, time);
+        }, TIME_BETWEEN_DRAW_CARD);
+}
+function revealDealerHiddenCard() {
+    document.getElementById('dealer-cards').removeChild(dealerHiddenCardElement);
+    addCardToHand(dealerHand[1], 'dealer', 1);
+}
+
+function updateDealerScore() {
+  const dealerValue = calculateHandValue(dealerHand);
+    document.getElementById('dealer-score').textContent = dealerValue;
+    document.getElementById("score").textContent = dealerValue;
+    if (dealerValue === BLACKJACK_VALUE) {
+        zunda3.play();
+    }
+}
+function dealersTurn() {
+    let dealerValue = calculateHandValue(dealerHand);
+    while (dealerValue < DEALER_STAND_VALUE && dealerHand.length < MAX_PLAYER_CARDS) {
+        sound1.play();
+        const card = drawCard();
+        dealerHand.push(card);
+        addCardToHand(card, 'dealer', dealerHand.length - 1);
+        dealerValue = calculateHandValue(dealerHand);
+        updateDealerScore();
+    }
+}
+function showGameResult() {
+    if (fight1) {
+        zunda4.play();
+    } else if (!draw1) {
+        zunda5.play();
+    }
+    document.getElementById('result-overlay').style.display = 'block';
+    document.getElementById("score1").textContent = calculateHandValue(playerHand);
 }
 // ダブル
-function double(){
-    
-    if (gameOver) return;
-    document.getElementById('hit_b').style.display = 'none';
-    document.getElementById('insurance_b').style.display = 'none';
-    maxBet -= currentBet;
-    document.getElementById('syozi').textContent = maxBet;    
-    if(currentSplitHand === 1){
-        double1 = true;
-        Bet1 += currentBet;
-    } else if(currentSplitHand === 2){
-        double2 = true;
-        Bet2 += currentBet;
-    }
-    hit();
-    if (!isSplitMode) {
-        stand();
-    }
+function double() {
+  if (gameOver) return;
+  disableActionButtons();
+  maxBet -= currentBet;
+  document.getElementById('syozi').textContent = maxBet;
+  if (currentSplitHand === 1) {
+    double1 = true;
+    Bet1 += currentBet;
+  } else if (currentSplitHand === 2) {
+    double2 = true;
+    Bet2 += currentBet;
+  }
+  hit();
+  if (!isSplitMode) {
+      stand();
+  }
 }
 // スプリット
-const split = document.getElementById('split_b').addEventListener('click', () => {
-    if(gameOver) return;
-    // スプリット可能かどうかの条件
-    const isSpilitPossible = 
-        playerHand.length === 2 && ((playerHand[0].value === playerHand[1].value) || (['10', '11', '12', '13'].includes(playerHand[0].value) && ['10', '11', '12', '13'].includes(playerHand[1].value)));
-    if(isSpilitPossible) {
-        // スプリットモードを有効化
-        isSplitMode = true;
-        maxBet -= currentBet;
-        Bet2 += currentBet;
-        document.getElementById('syozi').textContent = maxBet;    
-        currentSplitHand = 1;
-        document.getElementById('split_b').style.display = 'none';
-        document.getElementById('insurance_b').style.display = 'none';
-        document.getElementById('surrender_b').style.display = 'none';
-        document.querySelector('#player-hand h2').style.display = 'none';
-        document.getElementById('hand-of-cards').textContent = 'hand1の行動選択';
-        if(currentBet > maxBet){
-            document.getElementById('double_b').style.display = 'none';
-        }
-        // プレイヤーの最初のハンドを二つに分割
-        splitHand1 = [playerHand[0]];
-        splitHand2 = [playerHand[1]];
-        // 各ハンドに新しいカードを追加
-        splitHand1.push(drawCard());
-        splitHand2.push(drawCard());
-        // プレイヤーカードの表示を完全にリセット
-        const playerCardsElement = document.getElementById('player-cards');
-        playerCardsElement.innerHTML = '';
-        // スプリットハンズコンテナを表示
-        const splitHandsContainer = document.getElementById('split-hands-container');
-        splitHandsContainer.style.display = 'flex';
-        // 最初のハンドを表示
-        const splitHand1Cards = document.getElementById('split-hand-1-cards');
-        splitHand1Cards.innerHTML = '';
-        splitHand1.forEach((card, index) => {
-            const cardImage = document.createElement('img');
-            cardImage.src = `../cards/${card.value}_${card.suit}.png`;
-            cardImage.classList.add('card-image');
-            splitHand1Cards.appendChild(cardImage);
-        });
-        // 2番目のハンドを表示
-        const splitHand2Cards = document.getElementById('split-hand-2-cards');
-        splitHand2Cards.innerHTML = '';
-        splitHand2.forEach((card, index) => {
-            const cardImage = document.createElement('img');
-            cardImage.src = `../cards/${card.value}_${card.suit}.png`;
-            cardImage.classList.add('card-image');
-            splitHand2Cards.appendChild(cardImage);
-        });
-        // スコアの更新
-        document.getElementById('split-hand-1-score').textContent = `Hand 1: ${calculateHandValue(splitHand1)}`;
-        document.getElementById('split-hand-2-score').textContent = `Hand 2: ${calculateHandValue(splitHand2)}`;
-        const hand1Value = calculateHandValue(splitHand1);
-        const hand2Value = calculateHandValue(splitHand2);
-        console.log(hand1Value);
-        console.log(hand2Value);
-         // ブラックジャック判定
-         if(hand1Value === 21) {
+document.getElementById('split_b').addEventListener('click', () => {
+  if (gameOver) return;
+  if (!isSplittable(playerHand)) {
+    showAlertMessage('Split is not possible');
+    return;
+  }
+    isSplitMode = true;
+    maxBet -= currentBet;
+    Bet2 += currentBet;
+    document.getElementById('syozi').textContent = maxBet;    
+    currentSplitHand = 1;
+    disableSplitButtons();
+    document.querySelector('#player-hand h2').style.display = 'none';
+    document.getElementById('hand-of-cards').textContent = 'hand1の行動選択';
+
+    if (currentBet > maxBet) {
+      document.getElementById('double_b').style.display = 'none';
+    }
+
+  splitHands();
+  displaySplitHands();
+    const hand1Value = calculateHandValue(splitHand1);
+    const hand2Value = calculateHandValue(splitHand2);
+     if (hand1Value === BLACKJACK_VALUE) {
             blackjack1 = true;
             switchToNextHand();
-            if(hand2Value === 21) {
+            if (hand2Value === BLACKJACK_VALUE) {
                 blackjack2 = true;
                 switchToNextHand();
             }
         } else {
-            // 最初のハンドをアクティブに
             document.getElementById('split-hand-1').classList.add('active-hand');
             document.getElementById('split-hand-2').classList.remove('active-hand');
-        }
-    } else {
-        document.getElementById('message').textContent = 'Split is not possible';
     }
 });
 
+function isSplittable(hand){
+  return hand.length === 2 && ((hand[0].value === hand[1].value) || (['10', '11', '12', '13'].includes(hand[0].value) && ['10', '11', '12', '13'].includes(hand[1].value)));
+}
+
+function disableSplitButtons() {
+    document.getElementById('split_b').style.display = 'none';
+    document.getElementById('insurance_b').style.display = 'none';
+    document.getElementById('surrender_b').style.display = 'none';
+}
+function splitHands() {
+    splitHand1 = [playerHand[0]];
+    splitHand2 = [playerHand[1]];
+    splitHand1.push(drawCard());
+    splitHand2.push(drawCard());
+}
+function displaySplitHands() {
+    const playerCardsElement = document.getElementById('player-cards');
+    playerCardsElement.innerHTML = '';
+    document.getElementById('split-hands-container').style.display = 'flex';
+    displaySplitHand(1, splitHand1);
+    displaySplitHand(2, splitHand2);
+    updateScores();
+}
+function displaySplitHand(handNum, hand) {
+    const splitHandCards = document.getElementById(`split-hand-${handNum}-cards`);
+    splitHandCards.innerHTML = '';
+    hand.forEach((card) => {
+      const cardImage = createCardImage(card);
+      splitHandCards.appendChild(cardImage);
+    });
+}
+// ハンド切り替え
 function switchToNextHand() {
     if(maxBet >= currentBet){
         document.getElementById('double_b').style.display = 'block';
     } else {
         document.getElementById('double_b').style.display = 'none';
     }
-
-    splitnum = 2;
-    if(currentSplitHand === 1) {
-        // 最初のハンドが終了したら2番目のハンドへ
+  splitNum = 2;
+  if (currentSplitHand === 1) {
         currentSplitHand = 2;
         document.getElementById('hand-of-cards').textContent = 'hand2の行動選択';
-        
-        // ハンドの表示を切り替え
         document.getElementById('split-hand-1').classList.remove('active-hand');
         document.getElementById('split-hand-2').classList.add('active-hand');
-        const hand2Value = calculateHandValue(splitHand2);
-        if(hand2Value === 21) {
-            switchToNextHand();
+      if (isBlackjack(splitHand2)) {
+          switchToNextHand();
         }
     } else {
-        // 2番目のハンドが終了したら通常モードに戻る
         isSplitMode = false;
         currentSplitHand = 1;
         document.getElementById('double_b').style.display = 'none';
         document.getElementById('hand-of-cards').textContent = '';
-        // 最終的な判定処理
         resolveSplitHands();
     }
 }
-
-function resultdisplay(winner){
-    document.getElementById('winner').textContent = winner;
+// リザルト表示
+function resultdisplay(winner) {
+  document.getElementById('winner').textContent = winner;
 }
+// スプリット時の結果処理
 function resolveSplitHands() {
-    let result1 = '';
-    let result2 = '';
+    revealDealerHiddenCard();
+    updateDealerScore();
+    dealersTurn();
 
-    // 両方のハンドの結果を比較・判定
     const hand1Value = calculateHandValue(splitHand1);
     const hand2Value = calculateHandValue(splitHand2);
-        
-    // 最初の2枚目のカードをめくる
-    document.getElementById('dealer-cards').removeChild(dealerHiddenCardElement);
-    addCardToHand(dealerHand[1], 'dealer', 1);
-        
-    // この時点でディーラーの点数を更新
-    document.getElementById('dealer-score').textContent = calculateHandValue(dealerHand);
-                
-    let dealerValue = calculateHandValue(dealerHand);
-                
-    // ディーラーのカードを最大5枚まで制限
-    while(dealerValue < 17 && dealerHand.length < 5) {
-        const card = drawCard();
-        dealerHand.push(card);
-        addCardToHand(card, 'dealer', dealerHand.length - 1);
-        dealerValue = calculateHandValue(dealerHand);
+    const dealerValue = calculateHandValue(dealerHand);
 
-        // 追加のカードを引くたびにスコアを更新
-        document.getElementById('dealer-score').textContent = dealerValue;
-    }
+    determineGameOutcome(dealerValue, hand1Value, hand2Value);
 
-    const playerValue = calculateHandValue(playerHand);
-    // メッセージ表示
-    //document.getElementById('message').textContent = `Hand 1: ${hand1Value} (${result1}), Hand 2: ${hand2Value} (${result2})`;
-    // bet処理
-    determineGameOutcome(dealerValue, hand1Value, hand2Value, blackjack1, double1, blackjack2, double2)    // ゲーム終了処理
-
-    if(!fight1 && !fight2){
+    if (!fight1 && !fight2) {
         zunda5.play();
-    } else{
+    } else {
         zunda4.play();
     }
 
@@ -567,80 +599,64 @@ function resolveSplitHands() {
     reset();
     timeset();
 }
+// 勝敗判定
+function determineGameOutcome(dealerValue, hand1Value, hand2Value) {
+    fight1 = determineFight(dealerValue, hand1Value);
+    draw1 = (hand1Value === dealerValue && hand1Value <= BLACKJACK_VALUE) ? true : false;
+    fight2 = determineFight(dealerValue, hand2Value);
+    draw2 = (hand2Value === dealerValue && hand2Value <= BLACKJACK_VALUE) ? true : false;
+    if (hand1Value > BLACKJACK_VALUE) fight1 = false;
+    if (hand2Value > BLACKJACK_VALUE) fight2 = false;
+    
+    const winner = determineWinner(hand1Value, hand2Value, fight1, fight2);
+    resultdisplay(winner);
+}
 
+function determineWinner(hand1Value, hand2Value, fight1, fight2) {
+  if (fight1 && !fight2) return 'Player Hand 1 win';
+  if (!fight1 && fight2) return 'Player Hand 2 win';
+  if (fight1 && fight2) return 'Both Hands win';
+  return 'Dealer win';
+}
+function determineFight(dealerValue, playerValue) {
+    return (playerValue > BLACKJACK_VALUE) ? false : (dealerValue > BLACKJACK_VALUE) ? true : (playerValue > dealerValue) ? true : false;
+}
 // インシュランス
-const insurance = document.getElementById('insurance_b').addEventListener('click', () => {
-    if(dealerHand[0].value === '1' && !gameOver) {
-        maxBet -= Math.floor(currentBet/2);
-        document.getElementById('syozi').textContent = maxBet;
-        insuranceAvailable = true;
-        document.getElementById('hit_b').style.display = 'none';
-        document.getElementById('double_b').style.display = 'none';
-        document.getElementById('insurance_b').style.display = 'none';
-        document.getElementById('split_b').style.display = 'none';
-        document.getElementById('surrender_b').style.display = 'none';
-        document.getElementById('stand_b').style.display = 'none';
-        stand();
-    } 
+document.getElementById('insurance_b').addEventListener('click', () => {
+  if(dealerHand[0].value === '1' && !gameOver) {
+    maxBet -= Math.floor(currentBet / 2);
+    document.getElementById('syozi').textContent = maxBet;
+    insuranceAvailable = true;
+    disableInsuranceButtons();
+    stand();
+  }
 });
+
+function disableInsuranceButtons() {
+    document.getElementById('hit_b').style.display = 'none';
+    document.getElementById('double_b').style.display = 'none';
+    document.getElementById('insurance_b').style.display = 'none';
+    document.getElementById('split_b').style.display = 'none';
+    document.getElementById('surrender_b').style.display = 'none';
+    document.getElementById('stand_b').style.display = 'none';
+}
+
 // サレンダー
-const surrender = document.getElementById('surrender_b').addEventListener('click', () => {
-    if(!gameOver) {
+document.getElementById('surrender_b').addEventListener('click', () => {
+    if (!gameOver) {
         surrenderflg = true;
         stand();
         gameOver = true;
         reset();
-        surrender_bet();
+        surrenderBet();
         updateBetDisplay();
-        document.getElementById('bets').style.display = 'block'
+        document.getElementById('bets').style.display = 'block';
     }
-    flag = false;
+    gameStarted = false;
 });
 
-function determineGameOutcome(dealerValue, hand1Value, hand2Value, blackjack1, double1, blackjack2, double2) {
-    fight1 = determineFight(dealerValue, hand1Value);
-    draw1 = (hand1Value === dealerValue && hand1Value <= 21) ? true: false;
-    fight2 = determineFight(dealerValue, hand2Value);
-    draw2 = (hand2Value === dealerValue && hand2Value <= 21) ? true : false;
-
-    // ハンドが21を超えた場合は敗北
-    if (hand1Value > 21) {
-        fight1 = false;
-    }
-    if (hand2Value > 21) {
-        fight2 = false;
-    }
-
-    // 勝者の判定
-    let winner = determineWinner(fight1, fight2);
-    resultdisplay(winner);
-
-    calculateWinnings(fight1, blackjack1, draw1, fight2, blackjack2, draw2, insuranceAvailable, Bet1, Bet2, bust1, bust2);
-}
-
-function determineWinner(fight1, fight2) {
-    if (fight1 && !fight2) return 'Player Hand 1 win';
-    if (!fight1 && fight2) return 'Player Hand 2 win';
-    if (fight1 && fight2) return 'Both Hands win';
-    return 'Dealer win';
-}
-
-function determineFight(dealer, player) {
-    // バストした場合は負け
-    /*if (handValue > 21){
-        return false;
-    } else {
-        // 通常の比較
-        let judge = handValue > dealerValue ? true : false;
-        return judge;
-    }*/
-
-    let judge = (player > 21) ? false : (dealer > 21) ? true: (player > dealer) ? true : false;;
-    return judge;
-}
-// セット処理
+// リセット
 function reset() {
-    // ボタンの表示・非表示
     document.getElementById('stand_b').style.display = 'none';
     document.getElementById('hit_b').style.display = 'none';
     document.getElementById('double_b').style.display = 'none';
@@ -648,25 +664,49 @@ function reset() {
     document.getElementById('split_b').style.display = 'none';
     document.getElementById('insurance_b').style.display = 'none';
     document.getElementById('deal_b').style.display = 'block';
-    document.getElementById('syozi').style.innerHTML = maxBet;
+    document.getElementById('syozi').innerHTML = maxBet;
     gameOver = false;
-    flag = true;
-    splitnum = 2;
+    gameStarted = true;
+    splitNum = 2;
     isSplitMode = false;
-    drawBet = 0;
 }
-
+// タイムセット
 function timeset() {
-    setTimeout(() => {
-        flag = false;
-        /*document.getElementById('stand_b').style.display = 'none';
-        document.getElementById('hit_b').style.display = 'none';
-        document.getElementById('double_b').style.display = 'none';
-        document.getElementById('surrender_b').style.display = 'none';
-        document.getElementById('split_b').style.display = 'none';
-        document.getElementById('insurance_b').style.display = 'none';
-        document.getElementById('deal_b').style.display = 'block';*/
-        document.getElementById('bets').style.display = 'block';
+  setTimeout(() => {
+    gameStarted = false;
+    document.getElementById('bets').style.display = 'block';
         updateBetDisplay();
-    }, 1500);
+    }, TIME_BETWEEN_ACTIONS);
+}
+// アラートメッセージ
+function showAlertMessage(message) {
+    document.getElementById('alert-message').textContent = message;
+    document.getElementById('alert-overlay').style.display = 'block';
+}
+// サウンドを止める
+function stopSounds() {
+    sound1.pause();
+    sound1.currentTime = 0;
+    sound2.pause();
+    sound2.currentTime = 0;
+    sound3.pause();
+    sound3.currentTime = 0;
+    sound4.pause();
+    sound4.currentTime = 0;
+    zunda1.pause();
+    zunda1.currentTime = 0;
+    zunda2.pause();
+    zunda2.currentTime = 0;
+    zunda3.pause();
+    zunda3.currentTime = 0;
+    zunda4.pause();
+    zunda4.currentTime = 0;
+    zunda5.pause();
+    zunda5.currentTime = 0;
+    zunda6.pause();
+    zunda6.currentTime = 0;
+    zunda7.pause();
+    zunda7.currentTime = 0;
+    zunda8.pause();
+    zunda8.currentTime = 0;
 }
