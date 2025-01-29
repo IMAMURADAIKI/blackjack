@@ -589,7 +589,7 @@ function resolveSplitHands() {
     const dealerValue = calculateHandValue(dealerHand);
 
     determineGameOutcome(dealerValue, hand1Value, hand2Value);
-
+    calculateWinnings(fight1, blackjack1, draw1, fight2, blackjack2, draw2, insuranceAvailable, Bet1, Bet2);
     if (!fight1 && !fight2) {
         zunda5.play();
     } else {
