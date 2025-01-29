@@ -354,6 +354,7 @@ function checkSplitHandStatus(hand) {
 
 // 通常ダブル時のヒット処理
 function handleDoubleHit() {
+    document.getElementById('hit_b').style.display = 'none';
     sound1.play();
         const card = drawCard();
         playerHand.push(card);
@@ -365,7 +366,6 @@ function handleDoubleHit() {
             gameOver = true;
         }
         if (playerValue === BLACKJACK_VALUE) {
-            document.getElementById('hit_b').style.display = 'none';
             blackjack1 = true;
             stand();
         }
