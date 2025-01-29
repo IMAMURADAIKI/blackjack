@@ -483,9 +483,12 @@ document.getElementById('split_b').addEventListener('click', () => {
     showAlertMessage('Split is not possible');
     return;
   }
+    
+    const splitBet = getSplitBet();
+    decreaseMaxBet(splitBet);
+    Bet2 += splitBet;
+    
     isSplitMode = true;
-    maxBet -= currentBet;
-    Bet2 += currentBet;
     document.getElementById('syozi').textContent = maxBet;    
     currentSplitHand = 1;
     disableSplitButtons();
