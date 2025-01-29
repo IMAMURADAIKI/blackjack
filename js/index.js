@@ -423,7 +423,7 @@ function handleNormalStand() {
             bustHands(handValue, 1);
             draw1 = (handValue === dealerValue) ? true : false;
             resultdisplay(win);
-            calculateWinnings(fight1, blackjack1, draw1, fight2, blackjack2, draw2, insuranceAvailable, Bet1, Bet2, bust1, bust2);
+            calculateWinnings(fight1, blackjack1, draw1, fight2, blackjack2, draw2, insuranceAvailable, dealblackjack , Bet1, Bet2, bust1, bust2);
             gameOver = true;
 
             showGameResult();
@@ -608,7 +608,7 @@ function resolveSplitHands() {
     bustHands(hand2Value, 2);
 
     determineGameOutcome(dealerValue, hand1Value, hand2Value);
-    calculateWinnings(fight1, blackjack1, draw1, fight2, blackjack2, draw2, insuranceAvailable, Bet1, Bet2, bust1, bust2);
+    calculateWinnings(fight1, blackjack1, draw1, fight2, blackjack2, draw2, insuranceAvailable, dealblackjack, Bet1, Bet2, bust1, bust2);
     if (!fight1 && !fight2) {
         zunda5.play();
     } else {
