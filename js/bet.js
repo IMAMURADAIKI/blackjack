@@ -143,19 +143,20 @@ function calculateDrawWinnings(draw, bet, bust) {
   return 0;
 }
 // 全体の勝利金額を計算
-function calculateWinnings(fight1, blackjack1, draw1, fight2, blackjack2, draw2, insurance, bet1, bet2, bust1, bust2) {
+function calculateWinnings(fight1, blackjack1, draw1, fight2, blackjack2, draw2, insurance, dealblackjack, bet1, bet2, bust1, bust2) {
   let totalWinnings =
     calculateHandWinnings(fight1, blackjack1, bet1) +
     calculateHandWinnings(fight2, blackjack2, bet2) +
     calculateDrawWinnings(draw1, bet1, bust1) +
     calculateDrawWinnings(draw2, bet2, bust2);
 
-    if(!insurance){
-        maxBet += totalWinnings;
-    } else {
+    if(dealblackjack){
         maxBet += bet1;
         totalWinnings = bet1;
     }
+    if(!insurance){
+        maxBet += totalWinnings;
+    } 
 
     if(totalWinnings > 0){
         sound3.play();
