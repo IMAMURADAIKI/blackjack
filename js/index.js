@@ -609,9 +609,9 @@ function resolveSplitHands() {
 function determineGameOutcome(dealerValue, hand1Value, hand2Value) {
     fight1 = determineFight(dealerValue, hand1Value);
     draw1 = (hand1Value === dealerValue && hand1Value <= BLACKJACK_VALUE) ? true : false;
+     if (hand1Value > BLACKJACK_VALUE) fight1 = false;
     fight2 = determineFight(dealerValue, hand2Value);
-    draw2 = (hand2Value === dealerValue && hand2Value <= BLACKJACK_VALUE) ? true : false;
-    if (hand1Value > BLACKJACK_VALUE) fight1 = false;
+     draw2 = (hand2Value === dealerValue && hand2Value <= BLACKJACK_VALUE) ? true : false;
     if (hand2Value > BLACKJACK_VALUE) fight2 = false;
     
     const winner = determineWinner(hand1Value, hand2Value, fight1, fight2);
