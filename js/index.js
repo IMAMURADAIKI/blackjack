@@ -478,44 +478,47 @@ function double() {
 }
 // スプリット
 document.getElementById('split_b').addEventListener('click', () => {
-  if (gameOver) return;
-  if (!isSplittable(playerHand)) {
-    showAlertMessage('Split is not possible');
-    return;
-  }
-    
-    const splitBet = getSplitBet();
-    decreaseMaxBet(splitBet);
-    Bet2 += splitBet;
+    if (gameOver) return;
+    if (!isSplittable(playerHand)) {
+      showAlertMessage('Split is not possible');
+        return;
+    }
+  
+    handleSplitBet();
     
     isSplitMode = true;
-    document.getElementById('syozi').textContent = maxBet;    
+    document.getElementById('syozi').textContent = maxBet;
     currentSplitHand = 1;
     disableSplitButtons();
     document.querySelector('#player-hand h2').style.display = 'none';
     document.getElementById('hand-of-cards').textContent = 'hand1の行動選択';
-
+    
     if (currentBet > maxBet) {
-      document.getElementById('double_b').style.display = 'none';
+    document.getElementById('double_b').style.display = 'none';
     }
-
-  splitHands();
-  displaySplitHands();
-    const hand1Value = calculateHandValue(splitHand1);
-    const hand2Value = calculateHandValue(splitHand2);
-     if (hand1Value === BLACKJACK_VALUE) {
-            blackjack1 = true;
-            switchToNextHand();
-            if (hand2Value === BLACKJACK_VALUE) {
-                blackjack2 = true;
-                switchToNextHand();
-            }
-        } else {
-            document.getElementById('split-hand-1').classList.add('active-hand');
-            document.getElementById('split-hand-2').classList.remove('active-hand');
-    }
-});
-
+  
+    splitHands();
+    displaySplitHands();
+      const hand1Value = calculateHandValue(splitHand1);
+        const hand2Value = calculateHandValue(splitHand2);
+       if (hand1Value === BLACKJACK_VALUE) {
+              blackjack1 = true;
+              switchToNextHand();
+              if (hand2Value === BLACKJACK_VALUE) {
+                  blackjack2 = true;
+                  switchToNextHand();
+                }
+          } else {
+              document.getElementById('split-hand-1').classList.add('active-hand');
+              document.getElementById('split-hand-2').classList.remove('active-hand');
+          }
+  });
+  
+  function handleSplitBet() {
+    const splitBet = currentBet;
+    maxBet -= splitBet;
+    Bet2 += splitBet;
+  }
 function isSplittable(hand){
   return hand.length === 2 && ((hand[0].value === hand[1].value) || (['10', '11', '12', '13'].includes(hand[0].value) && ['10', '11', '12', '13'].includes(hand[1].value)));
 }
