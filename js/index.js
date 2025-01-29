@@ -49,6 +49,7 @@ let splitNum = 2;
 let currentSplitHand = 1;
 let isSplitMode = false;
 let insuranceAvailable = false;
+let dealblackjack = false;
 
 // 初期設定
 sound0.pause();
@@ -173,10 +174,13 @@ function resetGameVariables() {
     fight2 = false;
     blackjack1 = false;
     blackjack2 = false;
+    dealblackjack = false;
     double1 = false;
     double2 = false;
     draw1 = false;
     draw2 = false;
+    bust1 = false;
+    bust2 = false;
     Bet1 = currentBet;
     Bet2 = 0;
     isSplitMode = false;
@@ -438,6 +442,7 @@ function updateDealerScore() {
     document.getElementById('dealer-score').textContent = dealerValue;
     document.getElementById("score").textContent = dealerValue;
     if (dealerValue === BLACKJACK_VALUE) {
+        dealblackjack = true;
         zunda3.play();
     }
 }
