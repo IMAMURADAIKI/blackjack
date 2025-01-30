@@ -381,6 +381,7 @@ function handleNormalHit() {
         const playerValue = calculateHandValue(playerHand);
         updateScores();
         if (playerValue > BLACKJACK_VALUE) {
+            document.getElementById('hit_b').style.display = 'none';
             stand();
             gameOver = true;
         }
