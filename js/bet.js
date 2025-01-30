@@ -150,13 +150,12 @@ function calculateWinnings(fight1, blackjack1, draw1, fight2, blackjack2, draw2,
     calculateDrawWinnings(draw1, bet1, bust1) +
     calculateDrawWinnings(draw2, bet2, bust2);
 
-    if(dealblackjack){
+    if(!insurance){
+        maxBet += totalWinnings;
+    } else if(dealblackjack){
         maxBet += bet1;
         totalWinnings = bet1;
     }
-    if(!insurance){
-        maxBet += totalWinnings;
-    } 
 
     if(totalWinnings > 0){
         sound3.play();
