@@ -316,8 +316,8 @@ h3 {
 
 #message {
   position: absolute;
-  top: 145px;
-  flex-wrap: wrap;
+  top: 150px;
+  left:50%
 }
 
 /* プレイヤーデータ */
