@@ -405,6 +405,7 @@ function stand() {
     }
 }
 function handleNormalStand() {
+    document.getElementById('hit_b').style.display = 'none';
     setTimeout(() => {
         sound2.play();
         revealDealerHiddenCard();
