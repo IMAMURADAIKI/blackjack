@@ -4,16 +4,17 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: rgb(0, 88, 27);
+  background-image:url("../image/table.png");
+  background-size: cover;
   color: #fff;
   margin: 0;
   padding: 0;
 }
 
-        /* メニュー関連のスタイルを追加 */
-        #menu-overlay {
-          position: fixed;
-          top: 0;
+/* メニュー関連のスタイルを追加 */
+#menu-overlay {
+  position: fixed;
+  top: 0;
           left: 0;
           width: 100%;
           height: 100%;
@@ -36,7 +37,7 @@ body {
           width: 200px;
           margin: 10px auto;
           padding: 10px;
-          font-size: 16px;
+          font-size: 18px;
           color: black;
       }
       #rules-overlay {
@@ -338,7 +339,7 @@ h3 {
 .bet-area {
   position: absolute;
   bottom: 20px; /* 下部に配置 */
-  right: 20px; /* 右端に配置 */
+  right: -200px; /* 右端に配置 */
   width: 180px;
   height: 220px;
   width: 20%; /* 幅を縮小 */
@@ -346,6 +347,31 @@ h3 {
   background-color: #333; /* 背景色 */
   padding: 10px;
   border-radius: 8px;
+}
+
+.bet-area.open {
+  right: 0; /* 表示状態 */
+}
+
+.side-button {
+  outline: none;
+  position: absolute;
+  top: 222px;
+  right: 2px; /* 左右のボタンを同じ位置に配置 */
+  transform: translateY(-50%);
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 1; /* ベット部分より手前に表示 */
+}
+
+.arrow-icon {
+  width: 30px; /* 画像サイズを調整 */
+  height: 30px; /* 画像サイズを調整 */
+}
+
+.hidden {
+  display: none;
 }
 
 /* チップエリア */
@@ -421,3 +447,4 @@ h3 {
 button:hover {
   background-color: #666;
 }
+
