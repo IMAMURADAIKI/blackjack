@@ -31,8 +31,6 @@ let gameOver = false;
 let gameStarted = false;
 let surrenderflg = false;
 let dealerHiddenCardElement = null;
-let Bet1 = 0;
-let Bet2 = 0;
 let fight1 = false;
 let blackjack1 = false;
 let double1 = false;
@@ -137,6 +135,7 @@ document.getElementById('deal_b').addEventListener('click', () => {
     setupGameUI();
     resetGameVariables();
     createDeckAndDealCards();
+    updateBetDisplay();
 
     if (isBlackjack(playerHand)) {
         handlePlayerBlackjack();
@@ -482,6 +481,7 @@ function double() {
     double2 = true;
     Bet2 += currentBet;
   }
+  updateBetDisplay();
   hit();
   if (!isSplitMode) {
       stand();
@@ -552,6 +552,7 @@ function displaySplitHands() {
     displaySplitHand(1, splitHand1);
     displaySplitHand(2, splitHand2);
     updateScores();
+    updateBetDisplay();
 }
 function displaySplitHand(handNum, hand) {
     const splitHandCards = document.getElementById(`split-hand-${handNum}-cards`);
@@ -743,10 +744,19 @@ function stopSounds() {
 
 function toggleBetArea() {
     const betArea = document.querySelector('.bet-area');
-    const leftArrow = document.querySelector('.left-arrow');
-    const rightArrow = document.querySelector('.right-arrow');
-  
-    betArea.classList.toggle('open');
-    leftArrow.classList.toggle('hidden');
-    rightArrow.classList.toggle('hidden');
-  }
+    const arrowIcon = document.getElementById('arrow-icon');
+
+    if (betArea.classList.contains('open')) {
+        // ベットエリアが表示されている場合
+        betArea.classList.remove('open'); // 非表示にする
+        arrowIcon.src = '../image/left.png'; // 左矢印に変更
+        arrowIcon.alt = 'Open Bet Area'; // alt属性も変更
+        betArea.style.display = 'none';
+    } else {
+        // ベットエリアが非表示の場合
+        betArea.classList.add('open'); // 表示する
+        arrowIcon.src = '../image/right.png'; // 右矢印に変更
+        arrowIcon.alt = 'Close Bet Area'; // alt属性も変更
+        betArea.style.display = 'block';
+    }
+}
