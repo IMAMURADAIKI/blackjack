@@ -104,6 +104,12 @@
         </div>
     </div>
     <!-- 賭け処理関係　-->
+    <div class="bet-date">
+        <div class="date">
+            <a>ベット金額(1)<div id="bet1">0</div></a>
+            <a>ベット金額(2)<div id="bet2">0</div></a> 
+        </div>
+    </div>
     <div class="player-date">
         <div class="date">
             <a>所持金<div id="syozi"></div></a>
@@ -111,8 +117,7 @@
     </div>
     <div class="container">
         <button class="side-button" onclick="toggleBetArea()">
-            <img src="../image/left.png" alt="Open Bet Area" class="arrow-icon left-arrow">
-            <img src="../image/right.png" alt="Close Bet Area" class="arrow-icon right-arrow hidden">
+            <img src="../image/right.png" alt="Open Bet Area" class="arrow-icon" id="arrow-icon">
         </button>
 
         <div class="bet-area" id="bets">
