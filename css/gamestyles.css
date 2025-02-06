@@ -333,13 +333,23 @@ h3 {
   border-radius: 8px;
 }
 
-
+.bet-date {
+  font-size: 14px;
+  position: absolute;
+  top: 20px; /* 上部に配置 */
+  left: 20px; /* 左端に配置 */
+  width: 20%; /* 幅を縮小 */
+  text-align: center;
+  background-color: #333; /* 背景色 */
+  padding: 10px;
+  border-radius: 8px;
+}
 
 /* ベットエリア用CSS */
 .bet-area {
   position: absolute;
   bottom: 20px; /* 下部に配置 */
-  right: -200px; /* 右端に配置 */
+  right: 15px; /* 右端に配置 */
   width: 180px;
   height: 220px;
   width: 20%; /* 幅を縮小 */
@@ -350,14 +360,14 @@ h3 {
 }
 
 .bet-area.open {
-  right: 0; /* 表示状態 */
+  right: 15; /* 表示状態 */
 }
 
 .side-button {
   outline: none;
   position: absolute;
-  top: 222px;
-  right: 2px; /* 左右のボタンを同じ位置に配置 */
+  top: 255px;
+  right: 10px; /* 左右のボタンを同じ位置に配置 */
   transform: translateY(-50%);
   background-color: transparent;
   border: none;
@@ -366,8 +376,8 @@ h3 {
 }
 
 .arrow-icon {
-  width: 30px; /* 画像サイズを調整 */
-  height: 30px; /* 画像サイズを調整 */
+  width: 25px; /* 画像サイズを調整 */
+  height: 25px; /* 画像サイズを調整 */
 }
 
 .hidden {
