@@ -58,6 +58,10 @@ sound0.loop = true;
 sound0.volume = 0.05;
 sound0.play();
 
+// ベット金額設定
+const betElement1 = document.getElementById('bet1');
+const betElement2 = document.getElementById('bet2');
+
 // メニュー関連
 document.addEventListener('DOMContentLoaded', () => {
     const gameMenuBtn = document.getElementById('game-menu-btn');
@@ -261,6 +265,7 @@ function updateScores() {
             document.getElementById('dealer-score').textContent = '';
         }
     }
+    amount();
 }
 // カードを配る
 function dealInitialCards() {
@@ -744,6 +749,13 @@ function stopSounds() {
     zunda8.currentTime = 0;
 }
 
+// ベット金額の表示変更
+function amount(){
+    betElement1.textContent = Bet1;
+    betElement2.textContent = Bet2;
+}
+
+// ベットエリアの表示/非表示
 function toggleBetArea() {
     const betArea = document.querySelector('.bet-area');
     const arrowIcon = document.getElementById('arrow-icon');
