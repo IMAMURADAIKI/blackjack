@@ -11,7 +11,7 @@
     
     </head>
     <body>
-        <button id="game-menu-btn">メニュー</button>
+        <button id="game-menu-btn">MENU</button>
         <div class="deal-area">
             <div class="game">
                 <div class="deck"></div>
@@ -109,32 +109,38 @@
             <a>所持金<div id="syozi"></div></a>
         </div>
     </div>
-    
-    <div class="bet-area" id="bets">
-        <div class="chips">
-            <div class="chip red">1</div>
-            <div class="chip yellow">10</div>
-            <div class="chip blue">50</div>
-            <div class="chip pink">100</div>
-            <div class="chip orange">500</div>
-            <div class="chip purple">1K</div>
-            <div class="chip mediumturquoise">5K</div>
-            <div class="chip yellowgreen">10K</div>
-            <div class="chip black">100K</div>
-        </div>
-        <div class="bet-controls">
-            <div class="bet-display">
-                <label for="bet-amount">Bet</label>
-                <input type="number" id="bet-amount" placeholder="入力" min="0">
+    <div class="container">
+        <button class="side-button" onclick="toggleBetArea()">
+            <img src="../image/left.png" alt="Open Bet Area" class="arrow-icon left-arrow">
+            <img src="../image/right.png" alt="Close Bet Area" class="arrow-icon right-arrow hidden">
+        </button>
+
+        <div class="bet-area" id="bets">
+            <div class="chips">
+                <div class="chip red">1</div>
+                <div class="chip yellow">10</div>
+                <div class="chip blue">50</div>
+                <div class="chip pink">100</div>
+                <div class="chip orange">500</div>
+                <div class="chip purple">1K</div>
+                <div class="chip mediumturquoise">5K</div>
+                <div class="chip yellowgreen">10K</div>
+                <div class="chip black">100K</div>
             </div>
-            <div class="buttons">
-                <button id="max">Max</button>
-                <button id="half">Half</button>
-                <button id="min">Min</button>
-                <button id="add">+</button>
-                <button id="subtract">-</button>
+            <div class="bet-controls">
+                <div class="bet-display">
+                    <label for="bet-amount">Bet</label>
+                    <input type="number" id="bet-amount" placeholder="入力" min="0">
+                </div>
+                <div class="buttons">
+                    <button id="max">Max</button>
+                    <button id="half">Half</button>
+                    <button id="min">Min</button>
+                    <button id="add">+</button>
+                    <button id="subtract">-</button>
+                </div>
             </div>
-        </div>
+        </div>  
     </div>
 </body>
 </html>
