@@ -432,8 +432,8 @@ function handleNormalStand() {
             showGameResult();
             reset();
             timeset();
-            }, time);
-        }, TIME_BETWEEN_DRAW_CARD);
+        }, time);
+    }, TIME_BETWEEN_DRAW_CARD);
 }
 function revealDealerHiddenCard() {
     document.getElementById('dealer-cards').removeChild(dealerHiddenCardElement);
@@ -680,7 +680,9 @@ document.getElementById('surrender_b').addEventListener('click', () => {
         updateBetDisplay();
         document.getElementById('bets').style.display = 'block';
     }
-    gameStarted = false;
+    setTimeout(() => {
+        gameStarted = false;
+    }, 1500);
 });
 
 // リセット
@@ -738,3 +740,13 @@ function stopSounds() {
     zunda8.pause();
     zunda8.currentTime = 0;
 }
+
+function toggleBetArea() {
+    const betArea = document.querySelector('.bet-area');
+    const leftArrow = document.querySelector('.left-arrow');
+    const rightArrow = document.querySelector('.right-arrow');
+  
+    betArea.classList.toggle('open');
+    leftArrow.classList.toggle('hidden');
+    rightArrow.classList.toggle('hidden');
+  }
